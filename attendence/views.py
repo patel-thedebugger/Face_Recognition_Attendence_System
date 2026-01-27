@@ -14,5 +14,4 @@ def get_labs_by_semester(request, semester_id):
             for batch in batchs
         ]
     }
-    print(data)
     return JsonResponse(data)
