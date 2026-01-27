@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Dashboard - Unified Layout</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-navy": "#1e3a8a",
+                        "accent-blue": "#3b82f6",
+                        "background-light": "#f1f5f9",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-size: 24px; vertical-align: middle; }
+        .nav-item-active {
+            @apply bg-primary-navy text-white shadow-md;
+        }
+        .nav-item-inactive {
+            @apply text-slate-600 hover:bg-slate-100 hover:text-primary-navy transition-all duration-200;
+        }
+        .stat-card {
+            @apply bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow;
+        }
+        .chart-placeholder {
+            background-image: linear-gradient(to top, #f8fafc 0%, #f1f5f9 100%);
+        }
+        .input-style{
+            width:100%;
+            border:1px solid #e2e8f0;
+            border-radius:8px;
+            padding:6px;
+            margin-bottom:6px;
+            font-size:12px;
+        }
+
+    </style>
+</head>
+
+<body class="bg-background-light min-h-screen text-slate-800 transition-colors duration-200">
+    <div class="flex flex-col h-screen overflow-hidden">
+        <header
+            class="flex items-center justify-between border-b border-slate-200 bg-white px-8 py-3 sticky top-0 z-50">
+            <div class="flex items-center gap-10">
+                <div class="flex items-center gap-3 text-primary-navy">
+                    <div class="size-10 bg-primary-navy rounded-lg flex items-center justify-center text-white">
+                        <span class="material-symbols-outlined !text-2xl">account_balance</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-primary-navy text-lg font-extrabold leading-none tracking-tight">University
+                            Portal</h2>
+                        <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-[0.2em]">Administration
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-1 justify-end gap-6 items-center">
+                <div class="hidden md:flex items-center bg-slate-100 rounded-full px-4 py-1.5 border border-slate-200">
+                    <span class="material-symbols-outlined text-slate-400 !text-xl">search</span>
+                    <input class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-slate-400"
+                        placeholder="Search systems..." />
+                </div>
+                <div class="flex items-center gap-4 pl-6 border-l border-slate-200">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs font-bold text-primary-navy">Dr. Sarah Jenkins</p>
+                        <p class="text-[10px] text-slate-500 font-medium">System Administrator</p>
+                    </div>
+                    <div class="relative group cursor-pointer">
+                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary-navy/10 ring-offset-2"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDZzxrYpDERuqDYBfz6a7llOiDnZkhaJyW5YG3mGVEXtm81KE_WnbPxaqFiNhLhhfIgrpssnGqP97uE1Mm0xwS0w8k_hKEJWhJLV5EtMfpeCupM_5Mism0pHQIVtOAOClAZTYqh3Z4AuGmByAoc6C988rtNY4JNCJ3kVCmjMle9sU-JubzOesVIO6hCTzRkDdfVN7qKtO9P-n5IVt3mC4bGv7JYW-sKLvEByZYXg2ojvr4WRIdAukCff8eB0yPEey7XNGXsu29dLmc0");'>
+                        </div>
+                        <div class="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white rounded-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="flex flex-1 overflow-hidden">
+            <aside
+                class="w-72 bg-white border-r border-slate-200 hidden lg:flex flex-col p-6 gap-8 shrink-0 overflow-y-auto">
+                <nav class="flex flex-col gap-2">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">General</p>
+                    <a class="nav-item-active flex items-center gap-3 px-4 py-3 rounded-xl" href="#"
+                        onclick="showSection(event, 'dashboard')">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span class="text-sm font-bold">Dashboard</span>
+                    </a>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mt-6 mb-2">Management
+                    </p>
+                    <a class="nav-item-inactive flex items-center gap-3 px-4 py-3 rounded-xl" href="#"
+                        onclick="showSection(event, 'Manage Faculty')">
+                        <span class="material-symbols-outlined">person_pin</span>
+                        <span class="text-sm font-bold">Manage Faculty</span>
+                    </a>
+                    <a class="nav-item-inactive flex items-center gap-3 px-4 py-3 rounded-xl" href="#"
+                        onclick="showSection(event, 'Manage Students')">
+                        <span class="material-symbols-outlined">groups</span>
+                        <span class="text-sm font-bold">Manage Students</span>
+                    </a>
+                    <a class="nav-item-inactive flex items-center gap-3 px-4 py-3 rounded-xl" href="#"
+                        onclick="showSection(event, 'Manage Subjects')">
+                        <span class="material-symbols-outlined">menu_book</span>
+                        <span class="text-sm font-bold">Manage Subjects</span>
+                    </a>
+                </nav>
+                <div class="mt-auto space-y-4">
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="size-2 rounded-full bg-blue-500"></span>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase">System Health</p>
+                        </div>
+                        <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-primary-navy w-[98%] h-full"></div>
+                        </div>
+                        <p class="text-[10px] mt-2 text-slate-400">98% Biometric Nodes Active</p>
+                    </div>
+                    <button
+                        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-colors">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="text-sm font-bold">Sign Out</span>
+                    </button>
+                </div>
+            </aside>
+            <main class="flex-1 overflow-y-auto p-8">
+                <section id="dashboard" class="page">
+                    <div class="max-w-7xl mx-auto space-y-8">
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                <span>Admin Portal</span>
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Admin Dashboard
+                                    </h1>
+                                    <p class="text-slate-500 mt-1">Real-time biometrics analytics and academic
+                                        performance
+                                        tracking.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="stat-card">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="p-2 bg-blue-50 text-primary-navy rounded-lg">
+                                        <span class="material-symbols-outlined">groups</span>
+                                    </div>
+                                    <span
+                                        class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">+4%</span>
+                                </div>
+                                <h3 class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Students
+                                </h3>
+                                <p class="text-3xl font-extrabold text-slate-900 mt-1">12,480</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="p-2 bg-blue-50 text-primary-navy rounded-lg">
+                                        <span class="material-symbols-outlined">person_pin</span>
+                                    </div>
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-full">Static</span>
+                                </div>
+                                <h3 class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Faculty</h3>
+                                <p class="text-3xl font-extrabold text-slate-900 mt-1">842</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="p-6 bg-primary-navy rounded-2xl text-white shadow-xl shadow-blue-900/20">
+                                <span class="material-symbols-outlined !text-3xl text-blue-300 mb-4">sensors</span>
+                                <h3 class="font-bold text-lg mb-2">Live Sync Enabled</h3>
+                                <p class="text-sm text-blue-100 leading-relaxed">Curriculum changes are pushed to
+                                    classroom
+                                    facial recognition terminals within 60 seconds.</p>
+                            </div>
+                            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
+                                <span
+                                    class="material-symbols-outlined !text-3xl text-primary-navy mb-4">monitoring</span>
+                                <h3 class="font-bold text-lg mb-2 text-slate-800">Attendance Metrics</h3>
+                                <p class="text-sm text-slate-500 leading-relaxed">Subject codes link automatically to
+                                    automated attendance reports for semester audits.</p>
+                            </div>
+                            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
+                                <span
+                                    class="material-symbols-outlined !text-3xl text-primary-navy mb-4">shield_person</span>
+                                <h3 class="font-bold text-lg mb-2 text-slate-800">Faculty Pairing</h3>
+                                <p class="text-sm text-slate-500 leading-relaxed">Paired subjects grant faculty
+                                    automatic
+                                    access to their respective classroom's face-ID hardware.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="Manage Faculty" class="page hidden">
+                    <div class="max-w-6xl mx-auto space-y-8">
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                <span>Admin Portal</span>
+                                <span class="material-symbols-outlined !text-xs">chevron_right</span>
+                                <span class="text-primary-navy">Faculty &amp; Assignments</span>
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Manage Faculty
+                                    </h1>
+                                    <p class="text-slate-500 mt-1">Register teaching staff and assign subject
+                                        responsibilities.</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button
+                                        class="flex items-center gap-2 px-5 py-2.5 bg-primary-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-900/20 hover:scale-[1.02] transition-all">
+                                        <span class="material-symbols-outlined !text-lg">person_add</span> Bulk Onboard
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                                <div class="px-8 py-5 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
+                                    <div class="p-2 bg-blue-100 text-primary-navy rounded-lg">
+                                        <span class="material-symbols-outlined">person_add_alt</span>
+                                    </div>
+                                    <h2 class="text-lg font-bold text-slate-800">Register New Faculty</h2>
+                                </div>
+                                <div class="p-8">
+                                    <form method="POST" action="{% url 'register_faculty' %}"
+                                        class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {% csrf_token %}
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Full
+                                                Name</label>
+                                            <input name="name"
+                                                class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy"
+                                                placeholder="e.g. Dr. Robert Miller" type="text" required />
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Faculty
+                                                Email
+                                            </label>
+                                            <input name="email"
+                                                class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy"
+                                                placeholder="e.g. faculty@university.edu" type="email" required />
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Branch</label>
+                                            <select name="branch"
+                                                class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
+                                                {% for branch in Branch %}<option value="{{ branch.id }}">
+                                                    {{branch.branch_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Phone
+                                                Number</label>
+                                            <input name="phone"
+                                                class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy"
+                                                placeholder="e.g. +91 9876543210" type="tel" required />
+                                        </div>
+                                        <div class="md:col-span-2 pt-2">
+                                            <button
+                                                class="w-full py-3 bg-primary-navy text-white font-bold rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
+                                                type="submit">
+                                                <span class="material-symbols-outlined !text-xl">save</span> Register
+                                                Faculty
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                            <!-- Faculty Assignment -->
+                            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                                <div class="px-8 py-5 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
+                                    <div class="p-2 bg-blue-100 text-primary-navy rounded-lg">
+                                        <span class="material-symbols-outlined">assignment_ind</span>
+                                    </div>
+                                    <h2 class="text-lg font-bold text-slate-800">Faculty Assignment</h2>
+                                </div>
+                                <div class="p-8">
+                                    <form class="space-y-6">
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Select Faculty Member</label>
+                                            <select
+                                                class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
+                                                <option value="">Choose a faculty member...</option>
+                                                {% for faculty in Faculty %}
+                                                    <option value="{{ faculty.id }}">{{ faculty.name }} ({{faculty.branch}} - {{ faculty.id }})</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div class="space-y-2">
+                                                <label
+                                                    class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Semester</label>
+                                                <select id="semesterSelect"
+                                                    class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
+                                                    {% for semester in Semesters %}
+                                                        <option value="{{ semester.id }}">Semester 
+                                                            {{ semester.semester_number }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="space-y-2">
+                                                <label
+                                                    class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Type</label>
+                                                <select id="assignmentType"
+                                                    class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
+                                                    <option>Theory</option>
+                                                    <option>Practical</option>
+                                                </select>
+                                            </div>
+                                            <div id="labContainer" class="hidden mt-3">
+                                                <label
+                                                    class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Available Labs</label>
+                                                <select id="labSelect"
+                                                   class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
+                                                    <option>Select Lab</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Assign Subjects (Multi-select)</label>
+                                            <div id="subjectContainer_Faculty"
+                                                class="p-3 bg-slate-50 border border-slate-200 rounded-xl max-h-32 overflow-y-auto space-y-2">
+                                                <!-- Subjects will be populated here based on semester selection -->
+                                            </div>
+                                        </div>
+                                        <button
+                                            class="w-full py-3 bg-accent-blue text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
+                                            type="submit">
+                                            <span class="material-symbols-outlined !text-xl">link</span> Link Assignment
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-xl font-extrabold text-slate-800">Existing Faculty Roster</h2>
+                                <div class="flex bg-white rounded-lg border border-slate-200 p-1">
+                                    <button class="p-1.5 hover:bg-slate-100 rounded text-slate-500"><span
+                                            class="material-symbols-outlined">filter_alt</span></button>
+                                    <button class="p-1.5 hover:bg-slate-100 rounded text-slate-500"><span
+                                            class="material-symbols-outlined">search</span></button>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead class="bg-slate-50 border-b border-slate-200">
+                                            <tr>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                                                    Faculty Name</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                                                    Faculty ID</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                                                    Department</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                                                    Assigned Subjects</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest text-right">
+                                                    Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                                            <tr class="hover:bg-slate-50/80 transition-colors group">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div
+                                                            class="size-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
+                                                            AT</div>
+                                                        <div class="flex flex-col">
+                                                            <span class="font-bold text-slate-800">Dr. Alan
+                                                                Turing</span>
+                                                            <span class="text-[10px] text-slate-400">Professor</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 font-mono text-sm text-slate-600">CS-001</td>
+                                                <td class="px-6 py-4 text-sm text-slate-700">Computer Science</td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-wrap gap-1">
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-100">CS101
+                                                            (T)</span>
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-100">CS204
+                                                            (B)</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <div class="flex justify-end gap-2">
+                                                        <button
+                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">edit</span></button>
+                                                        <button
+                                                            class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">delete</span></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-slate-50/80 transition-colors group">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div
+                                                            class="size-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
+                                                            GH</div>
+                                                        <div class="flex flex-col">
+                                                            <span class="font-bold text-slate-800">Dr. Grace
+                                                                Hopper</span>
+                                                            <span class="text-[10px] text-slate-400">Associate
+                                                                Professor</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 font-mono text-sm text-slate-600">CS-002</td>
+                                                <td class="px-6 py-4 text-sm text-slate-700">Computer Science</td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-wrap gap-1">
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold border border-indigo-100">CS305
+                                                            (P)</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <div class="flex justify-end gap-2">
+                                                        <button
+                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">edit</span></button>
+                                                        <button
+                                                            class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">delete</span></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div
+                                    class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                                    <p class="text-[11px] font-bold text-slate-500 uppercase">Showing 2 of 24 Registered
+                                        Faculty</p>
+                                    <div class="flex gap-2">
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-white transition-colors">Previous</button>
+                                        <div class="flex gap-1">
+                                            <button
+                                                class="px-3 py-1.5 rounded-lg bg-primary-navy text-white text-xs font-bold shadow-sm">1</button>
+                                            <button
+                                                class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200">2</button>
+                                        </div>
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-white transition-colors">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="Manage Students" class="page hidden">
+                    <div class="max-w-7xl mx-auto space-y-8">
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                <span>Admin Portal</span>
+                                <span class="material-symbols-outlined !text-xs">chevron_right</span>
+                                <span>Student Management</span>
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Manage Students
+                                        &amp;
+                                        Enrollment</h1>
+                                    <p class="text-slate-500 mt-1">Assign subjects to students and manage registered
+                                        university cohorts.</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button onclick="openStudentPopup()"
+                                        class="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 shadow-sm hover:bg-slate-50 transition-all">
+                                        <span class="material-symbols-outlined !text-lg">person_add</span> Add New
+                                        Student
+                                    </button>
+                                    <button
+                                        class="flex items-center gap-2 px-5 py-2.5 bg-primary-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-900/20 hover:scale-[1.02] transition-all">
+                                        <span class="material-symbols-outlined !text-lg">how_to_reg</span> Assign
+                                        Subjects
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                            <div class="px-8 py-5 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
+                                <div class="p-2 bg-blue-100 text-primary-navy rounded-lg">
+                                    <span class="material-symbols-outlined">assignment_ind</span>
+                                </div>
+                                <h2 class="text-lg font-bold text-slate-800">Student Subject Enrollment</h2>
+                            </div>
+                            <div class="p-8">
+                                <!-- Assigning the Subjects to Students based on their Academic Semester and Group/ID Range. -->
+                                <form class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                    <div class="md:col-span-4 space-y-6">
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Academic
+                                                Semester</label>
+                                            <select id="semesterSelect"
+                                                class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
+                                                {% for semester in Semesters %}
+                                                <option value="{{ semester.id }}">Semester {{ semester.semester_number}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Student
+                                                Group / ID Range</label>
+                                            <input
+                                                class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy"
+                                                placeholder="e.g. CS-B-2024 or 2024CS001-050" type="text" />
+                                        </div>
+                                        <div class="pt-2">
+                                            <button
+                                                class="w-full py-3 bg-primary-navy text-white font-bold rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
+                                                type="submit">
+                                                <span class="material-symbols-outlined !text-xl">task_alt</span> Confirm
+                                                Enrollment
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="md:col-span-8 space-y-2">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Select
+                                            Available Subjects for Semester
+                                        </label>
+
+                                        <div class="border border-slate-200 rounded-xl bg-slate-50 p-4">
+                                            <div id="subjectContainer"
+                                                class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[180px] overflow-y-auto pr-2 custom-scrollbar">
+
+                                            </div>
+                                        </div>
+                                        <p class="text-[10px] text-slate-400 italic mt-2 px-1">* Use the checkboxes to
+                                            multi-select subjects available for the selected semester.</p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-xl font-extrabold text-slate-800">Registered Students</h2>
+                                <div class="flex gap-2">
+                                    <div class="flex bg-white rounded-lg border border-slate-200 p-1">
+                                        <button class="p-1.5 hover:bg-slate-100 rounded text-slate-500"><span
+                                                class="material-symbols-outlined !text-xl">filter_list</span></button>
+                                        <button class="p-1.5 hover:bg-slate-100 rounded text-slate-500"><span
+                                                class="material-symbols-outlined !text-xl">sort</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead class="bg-slate-50 border-b border-slate-200">
+                                            <tr>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                                                    Student Name</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                                                    Roll No</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest text-center">
+                                                    Semester</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                                                    Enrolled Subjects</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest text-right">
+                                                    Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                                            <tr class="hover:bg-slate-50/80 transition-colors group">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="size-8 rounded-full bg-slate-200 bg-cover bg-center"
+                                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBW_SmWlEaOPDtaPJ3WvTmziSsmppYhxoVamfZrQjTqrYzKlBSdCnXpfvm1fQHzsRu3ZlGgeF1pUcsE5nXc-qW2jS80RLXZhaBT4eMO-jn7kbY3zVzti0h7EL3QN6MeDumsVr8ShcH02oEPwB6tnot2UFlrkIDqmvb3lpodbLJsrInvhNL2f5lxR0xn6Af_JrKq4xfs_yPYifKzyOCsoyyn1mpicv4w3Vt1OdfoTwK_1w5MFgV6vPER1IMRgE8e5whR9z4Gtnjr_No4')">
+                                                        </div>
+                                                        <div class="flex flex-col">
+                                                            <span class="font-bold text-slate-800 text-sm">Alexander
+                                                                Pierce</span>
+                                                            <span class="text-[10px] text-slate-400">CS-B Section</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 font-extrabold text-primary-navy text-sm">2024CS012
+                                                </td>
+                                                <td class="px-6 py-4 text-center font-bold text-slate-700 text-sm">4
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-wrap gap-1.5">
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS204</span>
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS205</span>
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS206</span>
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-bold">+2
+                                                            more</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <div class="flex justify-end gap-2">
+                                                        <button
+                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">visibility</span></button>
+                                                        <button
+                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">edit</span></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-slate-50/80 transition-colors group">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="size-8 rounded-full bg-slate-200 bg-cover bg-center"
+                                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCcUhJ1IQ0V5we1We48LgE40c3e350A5ZYBPmEZeMZboVM4ZrnUFCBww-q_Ho4uZ59ZIAXcsVYJL0hQ42zUeEUWnGGMsS0-BXcDUy2l5h205U4KwcmFeQk79gQgf4dIWpMtDT04uTrU5ptHZgFSVV0p9JGXBveIzOa9dkx40dlYsIiN9pVKlw9kMQgzDWaD35KD2GNzxJqwObirgxP9r0msEOD149N3HPlrHJDsPLgNbCQJ322cN8jpdGjc0WYIv8A0ZmDhpjkSHoTB')">
+                                                        </div>
+                                                        <div class="flex flex-col">
+                                                            <span class="font-bold text-slate-800 text-sm">Emma
+                                                                Richardson</span>
+                                                            <span class="text-[10px] text-slate-400">CS-A Section</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 font-extrabold text-primary-navy text-sm">2024CS045
+                                                </td>
+                                                <td class="px-6 py-4 text-center font-bold text-slate-700 text-sm">4
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-wrap gap-1.5">
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS204</span>
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS210</span>
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">HS102</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <div class="flex justify-end gap-2">
+                                                        <button
+                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">visibility</span></button>
+                                                        <button
+                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">edit</span></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-slate-50/80 transition-colors group">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="size-8 rounded-full bg-slate-200 bg-cover bg-center"
+                                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDA2hKgyFumjICgUvnh6niMG1EzJF1HzqSnqty2FkhZ6LR5zDXNmunsxPfLJ9VIVo8-2S2arpzKBX4dYYcE0TxIiYPWMUPvJslROz_Q8_DxyrqRLBmQb10E9Ng5pT_vhmoIj1Qyo0rPou9D01kVdwS7bpoTLJbbGt196qt8P1-1ElQxeU6ZJkzsxdH3sIW7ViuBzbrBOiGnZuTbtb9Oz-w4eDo3p9UbToOm63urd-9ch4-NtWiGinBDVeiVLcP6F8TX9Xfak8hqDpJm')">
+                                                        </div>
+                                                        <div class="flex flex-col">
+                                                            <span class="font-bold text-slate-800 text-sm">Liam
+                                                                Gallagher</span>
+                                                            <span class="text-[10px] text-slate-400">CS-B Section</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 font-extrabold text-primary-navy text-sm">2024CS089
+                                                </td>
+                                                <td class="px-6 py-4 text-center font-bold text-slate-700 text-sm">2
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-wrap gap-1.5">
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS101</span>
+                                                        <span
+                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">MA102</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <div class="flex justify-end gap-2">
+                                                        <button
+                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">visibility</span></button>
+                                                        <button
+                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
+                                                                class="material-symbols-outlined !text-lg">edit</span></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div
+                                    class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                                    <p class="text-[11px] font-bold text-slate-500 uppercase">Showing 3 of 1,240
+                                        Students
+                                    </p>
+                                    <div class="flex gap-2">
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-white transition-colors">Previous</button>
+                                        <div class="flex gap-1">
+                                            <button
+                                                class="px-3 py-1.5 rounded-lg bg-primary-navy text-white text-xs font-bold shadow-sm">1</button>
+                                            <button
+                                                class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200">2</button>
+                                            <button
+                                                class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200">3</button>
+                                        </div>
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-white transition-colors">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="p-6 bg-primary-navy rounded-2xl text-white shadow-xl shadow-blue-900/20">
+                                <span class="material-symbols-outlined !text-3xl text-blue-300 mb-4">face_6</span>
+                                <h3 class="font-bold text-lg mb-2">Biometric Enrollment</h3>
+                                <p class="text-sm text-blue-100 leading-relaxed">Students added here are automatically
+                                    prompted for face-recognition training at the next kiosk login.</p>
+                            </div>
+                            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
+                                <span
+                                    class="material-symbols-outlined !text-3xl text-primary-navy mb-4">analytics</span>
+                                <h3 class="font-bold text-lg mb-2 text-slate-800">Enrollment Stats</h3>
+                                <p class="text-sm text-slate-500 leading-relaxed">View automated reports on student
+                                    subject
+                                    load and semester-wise registration trends.</p>
+                            </div>
+                            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
+                                <span
+                                    class="material-symbols-outlined !text-3xl text-primary-navy mb-4">verified_user</span>
+                                <h3 class="font-bold text-lg mb-2 text-slate-800">Compliance Audit</h3>
+                                <p class="text-sm text-slate-500 leading-relaxed">Enrollment history is encrypted and
+                                    logged
+                                    for annual academic compliance auditing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="Manage Subjects" class="page hidden">
+                    <div class="max-w-6xl mx-auto space-y-8">
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                <span>Admin Portal</span>
+                                <span class="material-symbols-outlined !text-xs">chevron_right</span>
+                                <span>Curriculum Management</span>
+                                <span class="material-symbols-outlined !text-xs">chevron_right</span>
+                                <span class="text-primary-navy">Subjects</span>
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Subject Management
+                                    </h1>
+                                    <p class="text-slate-500 mt-1">Configure academic curriculum and attendance tracking
+                                        parameters.</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button
+                                        class="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 shadow-sm hover:bg-slate-50 transition-all">
+                                        <span class="material-symbols-outlined !text-lg">cloud_download</span> Export
+                                    </button>
+                                    <button
+                                        class="flex items-center gap-2 px-5 py-2.5 bg-primary-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-900/20 hover:scale-[1.02] transition-all">
+                                        <span class="material-symbols-outlined !text-lg">upload_file</span> Bulk Upload
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                            <div class="px-8 py-5 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
+                                <div class="p-2 bg-blue-100 text-primary-navy rounded-lg">
+                                    <span class="material-symbols-outlined">library_add</span>
+                                </div>
+                                <h2 class="text-lg font-bold text-slate-800">Register New Subject</h2>
+                            </div>
+                            <div class="p-8">
+                                <form method="POST" action="{% url 'add_subject' %}"
+                                    class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                                    {% csrf_token %}
+                                    <div class="md:col-span-3 space-y-2">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Subject
+                                            Code</label>
+                                        <input name="subject_code"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy"
+                                            placeholder="CS204" type="text" required />
+                                    </div>
+                                    <div class="md:col-span-6 space-y-2">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Full
+                                            Subject Name</label>
+                                        <input name="subject_name"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy"
+                                            placeholder="Object Oriented Programming &amp; Design" type="text"
+                                            required />
+                                    </div>
+                                    <div class="md:col-span-3 space-y-2">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Semester</label>
+                                        <select name="semester"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
+                                            {% for sem in Semesters %}
+                                            <option value="{{ sem.id }}">Semester {{ sem.id }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="md:col-span-3 space-y-2">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Credits</label>
+                                        <select
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
+                                            <option value="1">1 Credit</option>
+                                            <option value="2">2 Credits</option>
+                                            <option value="3" selected="">3 Credits</option>
+                                            <option value="4">4 Credits</option>
+                                        </select>
+                                    </div>
+                                    <div class="md:col-span-6 space-y-2">
+                                        <input type="hidden" name="subject_type" id="subject_type" required>
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Teaching
+                                            Type</label>
+                                        <div
+                                            class="grid grid-cols-3 gap-2 p-1 bg-slate-100 rounded-xl border border-slate-200">
+                                            <button type="button" data-type="theory"
+                                                class="type-btn py-2.5 rounded-lg bg-white shadow-sm border border-slate-200 text-xs font-bold text-primary-navy flex items-center justify-center gap-2">
+                                                <span class="material-symbols-outlined !text-sm">book</span> Theory
+                                            </button>
+                                            <button type="button" data-type="lab"
+                                                class="type-btn py-2.5 rounded-lg text-slate-500 hover:bg-white/50 text-xs font-bold flex items-center justify-center gap-2 transition-all">
+                                                <span class="material-symbols-outlined !text-sm">science</span>
+                                                Practical
+                                            </button>
+                                            <button type="button" data-type="theory_lab"
+                                                class="type-btn py-2.5 rounded-lg text-slate-500 hover:bg-white/50 text-xs font-bold flex items-center justify-center gap-2 transition-all">
+                                                <span class="material-symbols-outlined !text-sm">account_tree</span>
+                                                Both
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="md:col-span-3 flex items-end">
+                                        <button
+                                            class="w-full py-3 bg-primary-navy text-white font-bold rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
+                                            type="submit">
+                                            <span class="material-symbols-outlined !text-xl">add</span> Save Subject
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-xl font-extrabold text-slate-800">Academic Inventory</h2>
+                                <div class="flex bg-white rounded-lg border border-slate-200 p-1">
+                                    <button class="p-1.5 hover:bg-slate-100 rounded text-slate-500"><span
+                                            class="material-symbols-outlined">filter_alt</span></button>
+                                    <button class="p-1.5 hover:bg-slate-100 rounded text-slate-500"><span
+                                            class="material-symbols-outlined">grid_view</span></button>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead class="bg-slate-50 border-b border-slate-200">
+                                            <tr>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                                                    Code</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                                                    Subject Name</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest text-center">
+                                                    Semester</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest text-center">
+                                                    Credits</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest text-center">
+                                                    Teaching Type</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest text-center">
+                                                    Status</th>
+                                                <th
+                                                    class="px-6 py-4 text-[10px] font-bold uppercase text-slate-400 tracking-widest text-right">
+                                                    Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                                            {% for subject in Subjects %}
+                                            <tr class="hover:bg-slate-50/80 transition-colors group">
+                                                <td class="px-6 py-4 font-extrabold text-primary-navy">
+                                                    {{subject.subject_code }}</td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-col">
+                                                        <span class="font-bold text-slate-800">{{subject.subject_name}}</span>
+                                                        <span class="text-[10px] text-slate-400">Added: Jan 2024</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-center font-bold text-slate-700">
+                                                    {{subject.semester.semester_number}}</td>
+                                                <td class="px-6 py-4 text-center">{{ subject.credits }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <span
+                                                        class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold uppercase">{{subject.subject_type}}</span>
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <span
+                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700">Active</span>
+                                                </td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <div class="flex justify-end gap-2">
+                                                        <button type="button" onclick="openEditBox(this)"
+                                                            data-id="{{ subject.id }}"
+                                                            data-code="{{ subject.subject_code }}"
+                                                            data-name="{{ subject.subject_name }}"
+                                                            data-sem="{{ subject.semester.id }}"
+                                                            data-credits="{{ subject.credits }}"
+                                                            data-type="{{ subject.subject_type }}"
+                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors">
+                                                            <span class="material-symbols-outlined !text-lg">edit</span>
+                                                        </button>
+                                                        <a href="{% url 'delete_subject' subject.id %}"
+                                                            onclick="return confirm('Delete this subject and all its labs?')"
+                                                            class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors">
+                                                            <span
+                                                                class="material-symbols-outlined !text-lg">delete</span></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div
+                                    class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                                    <p class="text-[11px] font-bold text-slate-500 uppercase">Showing 3 of 42 Subjects
+                                    </p>
+                                    <div class="flex gap-2">
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-white transition-colors">Previous</button>
+                                        <div class="flex gap-1">
+                                            <button
+                                                class="px-3 py-1.5 rounded-lg bg-primary-navy text-white text-xs font-bold shadow-sm">1</button>
+                                            <button
+                                                class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200">2</button>
+                                            <button
+                                                class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200">3</button>
+                                        </div>
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-white transition-colors">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="editBoxWrapper"
+                            class="hidden fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+
+                            <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 relative">
+
+                                <h2 class="text-lg font-bold mb-4 text-center">Edit Subject</h2>
+
+                                <form method="POST" id="editForm">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="subject_id" id="edit_id">
+
+                                    <label class="text-xs font-bold">Subject Code</label>
+                                    <input name="subject_code" id="edit_code" class="input-style" required>
+
+                                    <label class="text-xs font-bold">Subject Name</label>
+                                    <input name="subject_name" id="edit_name" class="input-style" required>
+
+                                    <label class="text-xs font-bold">Semester</label>
+                                    <select name="semester" id="edit_semester" class="input-style">
+                                        {% for sem in Semesters %}
+                                        <option value="{{ sem.id }}">Sem {{ sem.semester_number }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <label class="text-xs font-bold">Credits</label>
+                                    <select name="credits" id="edit_credits" class="input-style">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+
+                                    <label class="text-xs font-bold">Teaching Type</label>
+                                    <select name="subject_type" id="edit_type" class="input-style">
+                                        <option value="theory">Theory</option>
+                                        <option value="lab">Practical</option>
+                                        <option value="theory_lab">Both</option>
+                                    </select>
+
+                                    <div class="flex justify-between mt-5">
+                                        <button type="button" onclick="closeEditBox()"
+                                            class="text-gray-500">Cancel</button>
+                                        <button type="submit"
+                                            class="bg-primary-navy text-white px-4 py-2 rounded-lg">Save</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="p-6 bg-primary-navy rounded-2xl text-white shadow-xl shadow-blue-900/20">
+                                <span class="material-symbols-outlined !text-3xl text-blue-300 mb-4">sensors</span>
+                                <h3 class="font-bold text-lg mb-2">Live Sync Enabled</h3>
+                                <p class="text-sm text-blue-100 leading-relaxed">Curriculum changes are pushed to
+                                    classroom
+                                    facial recognition terminals within 60 seconds.</p>
+                            </div>
+                            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
+                                <span
+                                    class="material-symbols-outlined !text-3xl text-primary-navy mb-4">monitoring</span>
+                                <h3 class="font-bold text-lg mb-2 text-slate-800">Attendance Metrics</h3>
+                                <p class="text-sm text-slate-500 leading-relaxed">Subject codes link automatically to
+                                    automated attendance reports for semester audits.</p>
+                            </div>
+                            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
+                                <span
+                                    class="material-symbols-outlined !text-3xl text-primary-navy mb-4">shield_person</span>
+                                <h3 class="font-bold text-lg mb-2 text-slate-800">Faculty Pairing</h3>
+                                <p class="text-sm text-slate-500 leading-relaxed">Paired subjects grant faculty
+                                    automatic
+                                    access to their respective classroom's face-ID hardware.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+        <div id="studentPopupWrapper" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+            <!-- DARK BACKGROUND -->
+            <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeStudentPopup()">
+            </div>
+
+            <!-- CENTER ALIGN CONTAINER -->
+            <div class="relative flex items-center justify-center min-h-screen p-4">
+
+                <!-- 🔽 YOUR EXISTING POPUP (UNCHANGED) -->
+                <div id="studentPopup"
+                    class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+
+                    <div
+                        class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-10">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="size-10 bg-primary-navy/10 text-primary-navy rounded-xl flex items-center justify-center">
+                                <span class="material-symbols-outlined">person_add</span>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-extrabold text-slate-900 leading-none">Add New Student</h2>
+                                <p class="text-xs text-slate-500 mt-1 font-medium">Register a new student and enroll biometric data</p>
+                            </div>
+                        </div>
+                        <button onclick="closeStudentPopup()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                        <form class="space-y-8" method="POST" action="{% url 'register_student' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span
+                                        class="text-[10px] font-bold text-primary-navy bg-primary-navy/5 px-2 py-0.5 rounded uppercase tracking-wider">Step
+                                        1</span>
+                                    <h3 class="text-xs font-bold uppercase text-slate-400 tracking-widest">Personal
+                                        Information
+                                    </h3>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-1.5">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Full
+                                            Name</label>
+                                        <input name="name"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
+                                            placeholder="Johnathan Doe" type="text" />
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Email
+                                            Address</label>
+                                        <input name="email"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
+                                            placeholder="j.doe@university.edu" type="email" />
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Roll
+                                            Number</label>
+                                        <input name="roll_no"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
+                                            placeholder="e.g. 2024CS001" type="text" />
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Academic
+                                            Semester</label>
+                                        <select name="semester"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all">
+                                            {% for sem in Semesters %}
+                                            <option value="{{ sem.id }}">Semester {{ sem.semester_number }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Phone Number</label>
+                                        <input name="phone"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
+                                            placeholder="+91 9876543210" type="tel" />
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Branch</label>
+                                        <select name="branch"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all">
+                                            {% for branch in Branch %}
+                                            <option value="{{ branch.id }}">{{ branch.branch_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="space-y-1.5 ">
+                                        <label
+                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Batch</label>
+                                        <select name="batch"
+                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all">
+                                            {%for batch in Batches %}
+                                            <option value="{{ batch.id }}">{{ batch.batch_name }}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-4 pt-4 border-t border-slate-100">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span
+                                        class="text-[10px] font-bold text-primary-navy bg-primary-navy/5 px-2 py-0.5 rounded uppercase tracking-wider">Step
+                                        2</span>
+                                    <h3 class="text-xs font-bold uppercase text-slate-400 tracking-widest">Biometric / Face
+                                        Data
+                                        Enrollment</h3>
+                                </div>
+                                <div
+                                    class="bg-slate-50 border border-dashed border-slate-300 rounded-2xl p-8 flex flex-col items-center justify-center text-center group hover:bg-slate-100 transition-colors cursor-pointer">
+                                    <div
+                                        class="size-16 bg-white border border-slate-200 rounded-full flex items-center justify-center text-primary-navy shadow-sm mb-4 group-hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined !text-3xl">add_a_photo</span>
+                                    </div>
+                                    <p class="text-sm font-bold text-slate-700">Upload Reference Photo</p>
+                                    <p class="text-xs text-slate-400 mt-1 max-w-[280px]">High-quality JPG or PNG. Ensure
+                                        neutral
+                                        expression and clear lighting for face recognition accuracy.</p>
+                                    <input class="hidden" id="photo-upload" type="file" />
+                                    <button
+                                        class="mt-4 px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 shadow-sm hover:shadow-md transition-all"
+                                        onclick="document.getElementById('photo-upload').click()" type="button">
+                                        Browse Files
+                                    </button>
+                                </div>
+                                <div class="flex items-start gap-3 p-4 bg-blue-50/50 rounded-xl border border-blue-100">
+                                    <span class="material-symbols-outlined text-blue-500 !text-xl">info</span>
+                                    <p class="text-[11px] text-blue-700 leading-relaxed font-medium">
+                                        The student will be required to perform a 3D depth-scan verification at their first
+                                        physical kiosk check-in after this record is created.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="px-8 py-5 bg-slate-50 border-t border-slate-200 flex justify-end gap-3 sticky bottom-0 z-10">
+                                <button 
+                                    onclick="closeStudentPopup()"
+                                    class="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-200 transition-all">
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    class="px-8 py-2.5 bg-primary-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-900/20 hover:scale-[1.02] transition-all flex items-center gap-2">
+                                    <span class="material-symbols-outlined !text-lg">check_circle</span> Save Student
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div> <!-- studentPopup -->
+            </div>
+        </div>
+
+    </div>
+</body>
+<script>
+    function openStudentPopup() {
+        const popup = document.getElementById("studentPopupWrapper");
+        popup.classList.remove("hidden");
+        popup.classList.add("flex");
+    }
+
+    function closeStudentPopup() {
+        const popup = document.getElementById("studentPopupWrapper");
+        popup.classList.add("hidden");
+        popup.classList.remove("flex");
+    }
+
+    // close when clicking outside
+    document.getElementById("studentPopupWrapper").addEventListener("click", function (e) {
+        if (e.target === this) {
+            closeStudentPopup();
+        }
+    });
+    document.getElementById("semesterSelect").addEventListener("change", loadSubjects);
+    document.getElementById("assignmentType").addEventListener("change", loadLabs);
+    document.getElementById("semesterSelect").addEventListener("change", loadLabs);
+
+    function loadLabs() {
+        const type = document.getElementById("assignmentType").value;
+        const semesterId = document.getElementById("semesterSelect").value;
+        const labContainer = document.getElementById("labContainer");
+        const labSelect = document.getElementById("labSelect");
+
+        if (type !== "Practical") {
+            labContainer.classList.add("hidden");
+            return;
+        }
+
+        fetch(`/get-labs/${semesterId}/`)
+            .then(res => res.json())
+            .then(data => {
+                labSelect.innerHTML = "";
+
+                if (data.batchs.length === 0) {
+                    labSelect.innerHTML = `<option>No Batch available</option>`;
+                } else {
+                    data.batchs.forEach(batchs => {
+                        labSelect.innerHTML += `<option value="${batchs.id}">${batchs.name}</option>`;
+                    });
+                }
+
+                labContainer.classList.remove("hidden");
+            });
+        }
+    function loadSubjects() {
+        const semId = document.getElementById("semesterSelect").value;
+        
+        fetch(`/ajax/get-subjects/?semester_id=${semId}`)
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById("subjectContainer");
+                const  container_Faculty = document.getElementById("subjectContainer_Faculty");
+                container.innerHTML = "";
+
+                data.forEach(sub => {
+                    container.innerHTML += `
+                    <label class="flex items-center gap-3 p-3 bg-white border rounded-lg hover:border-primary-navy/30 cursor-pointer">
+                        <input type="checkbox" name="subjects" value="${sub.id}"
+                            class="rounded border-slate-300 text-primary-navy size-4">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-bold text-slate-700">${sub.code}: ${sub.name}</span>
+                            <span class="text-[10px] text-slate-400">${sub.credits} Credits | ${sub.type}</span>
+                        </div>
+                    </label>`;
+
+                });
+                data.forEach(sub => {
+                    container_Faculty.innerHTML += `
+                                                <label
+                                                    class="flex items-center gap-3 text-sm p-1.5 hover:bg-white rounded-lg cursor-pointer">
+                                                    <input name="subjects" value="${sub.id}"
+                                                        class="rounded border-slate-300 text-primary-navy focus:ring-primary-navy/20"
+                                                        type="checkbox" />
+                                                    <span class="text-slate-700">${sub.code}: ${sub.name}</span>
+                                                </label>
+                    `;
+
+                });
+            });
+    }
+
+    // Load subjects on page load for default semester
+    window.onload = loadSubjects;
+
+    function showSection(event, sectionId) {
+        event.preventDefault(); // stop page reload
+
+        // 1️⃣ Toggle main content
+        document.querySelectorAll('.page').forEach(section => {
+            section.classList.add('hidden');
+        });
+        document.getElementById(sectionId).classList.remove('hidden');
+
+        // 2️⃣ Toggle active class in sidebar
+        document.querySelectorAll('aside a').forEach(link => {
+            link.classList.remove('nav-item-active');
+        });
+        event.currentTarget.classList.add('nav-item-active');
+    }
+
+    const buttons = document.querySelectorAll(".type-btn");
+    const hiddenInput = document.getElementById("subject_type");
+
+    // Default selection
+    hiddenInput.value = "theory";
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            // Reset all buttons to NON-SELECTED style
+            buttons.forEach(b => {
+                b.className =
+                    "type-btn py-2.5 rounded-lg text-slate-500 hover:bg-white/50 text-xs font-bold flex items-center justify-center gap-2 transition-all";
+            });
+
+            // Apply SELECTED style to clicked button
+            btn.className =
+                "type-btn py-2.5 rounded-lg bg-white shadow-sm border border-slate-200 text-xs font-bold text-primary-navy flex items-center justify-center gap-2";
+
+            // Store value
+            hiddenInput.value = btn.dataset.type;
+        });
+    });
+    function openEditBox(btn) {
+        edit_id.value = btn.dataset.id;
+        edit_code.value = btn.dataset.code;
+        edit_name.value = btn.dataset.name;
+        edit_semester.value = btn.dataset.sem;
+        edit_credits.value = btn.dataset.credits;
+        edit_type.value = btn.dataset.type;
+
+        editForm.action = "/Admin/Subjects/Edit/" + btn.dataset.id + "/";
+
+        document.getElementById("editBoxWrapper").classList.remove("hidden");
+    }
+
+
+    function closeEditBox() {
+        editBox.classList.add("hidden");
+    }
+
+</script>
+
+</html>

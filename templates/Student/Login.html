@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Student Login | University Attendance System</title>
+    <!-- Tailwind CSS with plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2e799e",
+                        "background-light": "#f9fafb",
+                        "background-dark": "#182125",
+                        "surface-light": "#f2f5f6",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-[#121517] dark:text-white transition-colors duration-200">
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Top Navigation Bar -->
+        {% include 'nav.html' %}
+        <!-- Main Content Area -->
+        <main class="flex flex-1 flex-col items-center justify-center p-4">
+            <div class="w-full max-w-[440px] flex flex-col gap-6">
+                <!-- Headline -->
+                <div class="text-center">
+                    <h1 class="text-primary tracking-tight text-[32px] font-bold leading-tight pb-2">CVM University
+                    </h1>
+                    <p class="text-[#687a82] dark:text-gray-400 text-base font-medium">Student Portal Access</p>
+                </div>
+                <!-- Login Card -->
+                <div
+                    class="bg-white dark:bg-[#1f292e] rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#dde2e4] dark:border-[#2a3439] overflow-hidden">
+                    <!-- Card Image/Banner (Subtle) -->
+                    <div class="h-32 w-full bg-center bg-cover bg-primary/10 relative"
+                        data-alt="Abstract blue architectural pattern"
+                        style='background-image: linear-gradient(rgba(46, 121, 158, 0.1), rgba(46, 121, 158, 0.1)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDIgPC9PQ3_lHjaNIBlqW721FuYWS5aID5ytsDbZIW6-pfVNmhUg6A7L5m3K4J8cRms1Esa3CfCtp1W2JL-dvBtGp8CV6nI_-_AnmsZOOrzIJkEvDT65bmApTDeOK8yZwi3ALqUEkIOC6pcpcTFV1LL8X0yyK9asSZlV9OEHEr1C3oEd8emG___WV79v8DE7Ky6UkKLotyxxbTGZkmY5C9fHdIgIb5evLl2RFaHESYCSzWKqV5yW1a3InEj1EMJgh4xAOROZDchrRsF");'>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-5xl">face_6</span>
+                        </div>
+                    </div>
+                    <div class="p-8 flex flex-col gap-6">
+                        <div class="text-center">
+                            <h2 class="text-xl font-bold text-[#121517] dark:text-white">Student Login</h2>
+                            <p class="text-sm text-[#687a82] dark:text-gray-400 mt-1">Please enter your credentials to
+                                initiate face recognition.</p>
+                        </div>
+                        <!-- Form -->
+                        <div class="flex flex-col gap-4">
+                            <!-- Roll Number Field -->
+                            <div class="flex flex-col gap-2">
+                                <label
+                                    class="text-[#121517] dark:text-gray-200 text-sm font-semibold flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-xs">badge</span>
+                                    Roll Number
+                                </label>
+                                <input
+                                    class="form-input flex w-full rounded-lg text-[#121517] dark:text-white border-[#dde2e4] dark:border-[#3a4a52] bg-white dark:bg-[#182125] focus:border-primary focus:ring-1 focus:ring-primary h-12 px-4 text-base transition-all placeholder:text-[#687a82]"
+                                    placeholder="e.g. 2024CS101" type="text" />
+                            </div>
+                            <!-- Password Field -->
+                            <div class="flex flex-col gap-2">
+                                <div class="flex justify-between items-center">
+                                    <label
+                                        class="text-[#121517] dark:text-gray-200 text-sm font-semibold flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-xs">lock</span>
+                                        Password
+                                    </label>
+                                    <a class="text-xs text-primary font-bold hover:underline" href="#">Forgot?</a>
+                                </div>
+                                <div class="relative flex items-center">
+                                    <input
+                                        class="form-input flex w-full rounded-lg text-[#121517] dark:text-white border-[#dde2e4] dark:border-[#3a4a52] bg-white dark:bg-[#182125] focus:border-primary focus:ring-1 focus:ring-primary h-12 pl-4 pr-12 text-base transition-all placeholder:text-[#687a82]"
+                                        placeholder="••••••••" type="password" />
+                                    <button
+                                        class="absolute right-3 text-[#687a82] hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Login Button -->
+                            <button
+                                class="w-full h-12 mt-2 bg-primary text-white rounded-lg font-bold text-base hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group">
+                                <span>Sign In &amp; Verify</span>
+                                <span
+                                    class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </button>
+                        </div>
+                        <!-- Footer Links inside Card -->
+                        <div
+                            class="pt-4 border-t border-[#dde2e4] dark:border-[#2a3439] flex flex-col items-center gap-3">
+                            <p class="text-xs text-[#687a82] dark:text-gray-400">Not a student?</p>
+                            <a class="flex items-center gap-2 text-sm font-bold text-primary hover:text-primary/80 transition-colors"
+                                href="{% url 'FacultyLogin_view' %}">
+                                <span class="material-symbols-outlined text-base">supervisor_account</span>
+                                Switch to Faculty Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- External Footer -->
+                <div class="flex justify-center gap-6 text-[#687a82] dark:text-gray-500 text-xs font-medium">
+                    <a class="hover:text-primary" href="#">System Status</a>
+                    <a class="hover:text-primary" href="#">Privacy Policy</a>
+                    <a class="hover:text-primary" href="#">Contact IT Support</a>
+                </div>
+            </div>
+        </main>
+        <!-- Aesthetic Decoration -->
+        <div class="fixed bottom-0 left-0 p-8 pointer-events-none opacity-10">
+            <span class="material-symbols-outlined text-9xl">school</span>
+        </div>
+        <div class="fixed top-20 right-0 p-8 pointer-events-none opacity-10">
+            <span class="material-symbols-outlined text-[120px]">verified_user</span>
+        </div>
+    </div>
+</body>
+
+</html>
