@@ -31,7 +31,7 @@ urlpatterns = [
     path('ajax/get-subjects/', get_subjects_by_semester, name='get_subjects'),
     path('Admin/Student/Register/', register_student, name='register_student'),
     path('get-labs/<int:semester_id>/', get_labs_by_semester, name='get_labs_by_semester'),
-
+    path('register/', register_view, name='Register'),
 
     path('admin/', admin.site.urls),
 ]

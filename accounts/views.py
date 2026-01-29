@@ -21,6 +21,9 @@ def FacultyLogin_view(request):
 def StudentLogin_view(request):
     return render(request, 'Student/Login.html')
 
+def register_view(request):
+    return render(request, 'Faculty/Register.html')
+
 def AdminDashboard_view(request):
     return render(request, 'Admin/Admin_Dashboard.html', {
         'Branch': Branch.objects.all(),
