@@ -9,7 +9,7 @@ from django.db import transaction
 from attendence.models import Branch
 from accounts.models import Faculty , Student
 from django.contrib.auth.models import User, Group
-from attendence.models import Subject, Lab, Batch, Semester
+from attendence.models import Subject, Lab, Batch, Semester, FacultySubject
 
 # Create your views here.
 def home_view(request):
@@ -33,6 +33,7 @@ def AdminDashboard_view(request):
         'Faculty': Faculty.objects.all(),
         'Students': Student.objects.all(),
         'Labs': Lab.objects.all(),
+        'FacultySubjects': FacultySubject.objects.all(),
     })
 
 def register_student(request):

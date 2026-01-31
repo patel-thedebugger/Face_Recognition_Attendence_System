@@ -29,9 +29,13 @@ urlpatterns = [
     path("Admin/Subjects/Edit/<int:id>/", edit_subject, name="edit_subject"),
     path("Admin/Subjects/Delete/<int:id>/", delete_subject, name="delete_subject"),
     path('ajax/get-subjects/', get_subjects_by_semester, name='get_subjects'),
+    path('ajax/get-faculty-subjects/', get_faculty_subject_list, name='get_faculty_subjects_list'),
     path('Admin/Student/Register/', register_student, name='register_student'),
-    path('get-labs/<int:semester_id>/', get_labs_by_semester, name='get_labs_by_semester'),
+    path('ajax/get-labs/<int:semester_id>/', get_labs_by_semester, name='get_labs_by_semester'),
     path('register/', register_view, name='Register'),
+    path('Admin/link-faculty-subject/', link_faculty_subject, name='link_faculty_subject'),
+    path('Admin/enroll-students-subjects/', enroll_students_subjects, name='enroll_students_subjects'),
+
 
     path('admin/', admin.site.urls),
 ]

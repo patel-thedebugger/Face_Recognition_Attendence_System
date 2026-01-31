@@ -302,11 +302,12 @@
                                     <h2 class="text-lg font-bold text-slate-800">Faculty Assignment</h2>
                                 </div>
                                 <div class="p-8">
-                                    <form class="space-y-6">
+                                    <form method="POST" action="{% url 'link_faculty_subject' %}" class="space-y-6">
+                                        {% csrf_token %}
                                         <div class="space-y-2">
                                             <label
                                                 class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Select Faculty Member</label>
-                                            <select
+                                            <select name="faculty_id"
                                                 class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
                                                 <option value="">Choose a faculty member...</option>
                                                 {% for faculty in Faculty %}
@@ -318,7 +319,7 @@
                                             <div class="space-y-2">
                                                 <label
                                                     class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Semester</label>
-                                                <select id="semesterSelect"
+                                                <select id="semesterSelect" 
                                                     class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
                                                     {% for semester in Semesters %}
                                                         <option value="{{ semester.id }}">Semester 
@@ -329,18 +330,18 @@
                                             <div class="space-y-2">
                                                 <label
                                                     class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Type</label>
-                                                <select id="assignmentType"
+                                                <select id="assignmentType" name="session_type"
                                                     class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
-                                                    <option>Theory</option>
-                                                    <option>Practical</option>
+                                                    <option>theory</option>
+                                                    <option>lab</option>
                                                 </select>
                                             </div>
                                             <div id="labContainer" class="hidden mt-3">
                                                 <label
                                                     class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Available Labs</label>
-                                                <select id="labSelect"
+                                                <select id="labSelect" name="batch_id"
                                                    class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
-                                                    <option>Select Lab</option>
+                                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -393,77 +394,7 @@
                                                     Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="divide-y divide-slate-100">
-                                            <tr class="hover:bg-slate-50/80 transition-colors group">
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center gap-3">
-                                                        <div
-                                                            class="size-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
-                                                            AT</div>
-                                                        <div class="flex flex-col">
-                                                            <span class="font-bold text-slate-800">Dr. Alan
-                                                                Turing</span>
-                                                            <span class="text-[10px] text-slate-400">Professor</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 font-mono text-sm text-slate-600">CS-001</td>
-                                                <td class="px-6 py-4 text-sm text-slate-700">Computer Science</td>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex flex-wrap gap-1">
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-100">CS101
-                                                            (T)</span>
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-100">CS204
-                                                            (B)</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-right">
-                                                    <div class="flex justify-end gap-2">
-                                                        <button
-                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">edit</span></button>
-                                                        <button
-                                                            class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">delete</span></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="hover:bg-slate-50/80 transition-colors group">
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center gap-3">
-                                                        <div
-                                                            class="size-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
-                                                            GH</div>
-                                                        <div class="flex flex-col">
-                                                            <span class="font-bold text-slate-800">Dr. Grace
-                                                                Hopper</span>
-                                                            <span class="text-[10px] text-slate-400">Associate
-                                                                Professor</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 font-mono text-sm text-slate-600">CS-002</td>
-                                                <td class="px-6 py-4 text-sm text-slate-700">Computer Science</td>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex flex-wrap gap-1">
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold border border-indigo-100">CS305
-                                                            (P)</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-right">
-                                                    <div class="flex justify-end gap-2">
-                                                        <button
-                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">edit</span></button>
-                                                        <button
-                                                            class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">delete</span></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        <tbody id="faculty_subjects" class="divide-y divide-slate-100">
                                         </tbody>
                                     </table>
                                 </div>
@@ -528,13 +459,14 @@
                             </div>
                             <div class="p-8">
                                 <!-- Assigning the Subjects to Students based on their Academic Semester and Group/ID Range. -->
-                                <form class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                <form method="POST" action="{% url 'enroll_students_subjects' %}" class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                    {% csrf_token %}
                                     <div class="md:col-span-4 space-y-6">
                                         <div class="space-y-2">
                                             <label
                                                 class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Academic
                                                 Semester</label>
-                                            <select id="semesterSelect"
+                                            <select id="semesterSelectStudents" name="semester_id"
                                                 class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy">
                                                 {% for semester in Semesters %}
                                                 <option value="{{ semester.id }}">Semester {{ semester.semester_number}}</option>
@@ -545,7 +477,7 @@
                                             <label
                                                 class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Student
                                                 Group / ID Range</label>
-                                            <input
+                                            <input name="student_range"
                                                 class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy"
                                                 placeholder="e.g. CS-B-2024 or 2024CS001-050" type="text" />
                                         </div>
@@ -1255,22 +1187,94 @@
             closeStudentPopup();
         }
     });
-    document.getElementById("semesterSelect").addEventListener("change", loadSubjects);
+    document.getElementById("semesterSelectStudents").addEventListener("change", loadSubjectsStudents);
     document.getElementById("assignmentType").addEventListener("change", loadLabs);
     document.getElementById("semesterSelect").addEventListener("change", loadLabs);
+    document.getElementById("semesterSelect").addEventListener("change", loadSubjectsFaculty);
+    
+    document.addEventListener("DOMContentLoaded", load_Subject_Faculty);
 
+    function load_Subject_Faculty() {
+        const row = document.getElementById("faculty_subjects");
+
+        fetch(`/ajax/get-faculty-subjects/`)
+            .then(res => res.json())
+            .then(context => {
+                row.innerHTML = "";
+
+                if (context.faculty_data.length === 0) {
+                    row.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center py-6 text-slate-400">
+                                No Faculty Assignments
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                context.faculty_data.forEach(item => {
+
+                    let subjectHTML = "";
+                    item.subjects.forEach(sub => {
+                        subjectHTML += `
+                            <span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-100">
+                                ${sub}
+                            </span>`;
+                    });
+
+                    const initials = item.name.split(" ").map(w => w[0]).slice(0,3).join("");
+
+                    row.innerHTML += `
+                    <tr class="hover:bg-slate-50/80 transition-colors group">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="size-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
+                                    ${initials}
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-slate-800">${item.name}</span>
+                                    <span class="text-[10px] text-slate-400">Professor</span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="px-6 py-4 font-mono text-sm text-slate-600">${item.id}
+                        </td>
+
+                        <td class="px-6 py-4 text-sm text-slate-700">${item.branch}
+                        </td>
+
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1">${subjectHTML}
+                            </div>
+                        </td>
+
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end gap-2">
+                                <button class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors">
+                                    <span class="material-symbols-outlined !text-lg">edit</span>
+                                </button>
+                                <button class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors">
+                                    <span class="material-symbols-outlined !text-lg">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
+            });
+    }
     function loadLabs() {
         const type = document.getElementById("assignmentType").value;
         const semesterId = document.getElementById("semesterSelect").value;
         const labContainer = document.getElementById("labContainer");
         const labSelect = document.getElementById("labSelect");
 
-        if (type !== "Practical") {
+        if (type !== "lab") {
             labContainer.classList.add("hidden");
             return;
         }
 
-        fetch(`/get-labs/${semesterId}/`)
+        fetch(`/ajax/get-labs/${semesterId}/`)
             .then(res => res.json())
             .then(data => {
                 labSelect.innerHTML = "";
@@ -1286,8 +1290,33 @@
                 labContainer.classList.remove("hidden");
             });
         }
-    function loadSubjects() {
+    function loadSubjectsFaculty() {
         const semId = document.getElementById("semesterSelect").value;
+        
+        fetch(`/ajax/get-subjects/?semester_id=${semId}`)
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById("subjectContainer");
+                const  container_Faculty = document.getElementById("subjectContainer_Faculty");
+                container.innerHTML = "";
+
+                
+                data.forEach(sub => {
+                    container_Faculty.innerHTML += `
+                                                <label
+                                                    class="flex items-center gap-3 text-sm p-1.5 hover:bg-white rounded-lg cursor-pointer">
+                                                    <input name="subjects" value="${sub.id}"
+                                                        class="rounded border-slate-300 text-primary-navy focus:ring-primary-navy/20"
+                                                        type="checkbox" />
+                                                    <span class="text-slate-700">${sub.code}: ${sub.name}</span>
+                                                </label>
+                    `;
+
+                });
+            });
+    }
+    function loadSubjectsStudents() {
+        const semId = document.getElementById("semesterSelectStudents").value;
         
         fetch(`/ajax/get-subjects/?semester_id=${semId}`)
             .then(res => res.json())
@@ -1308,24 +1337,12 @@
                     </label>`;
 
                 });
-                data.forEach(sub => {
-                    container_Faculty.innerHTML += `
-                                                <label
-                                                    class="flex items-center gap-3 text-sm p-1.5 hover:bg-white rounded-lg cursor-pointer">
-                                                    <input name="subjects" value="${sub.id}"
-                                                        class="rounded border-slate-300 text-primary-navy focus:ring-primary-navy/20"
-                                                        type="checkbox" />
-                                                    <span class="text-slate-700">${sub.code}: ${sub.name}</span>
-                                                </label>
-                    `;
-
-                });
+                
             });
     }
-
     // Load subjects on page load for default semester
-    window.onload = loadSubjects;
-
+    window.onload = loadSubjectsStudents;
+    window.onload = loadSubjectsFaculty;
     function showSection(event, sectionId) {
         event.preventDefault(); // stop page reload
 

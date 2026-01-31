@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import CheckConstraint, Q
 from django.forms import ValidationError
+from django.core.exceptions import ValidationError
 from FaceRecongnitionAttendenceSystem import *
 from django.db import transaction
 
@@ -19,15 +20,12 @@ class Branch(models.Model):
     def __str__(self):
         return self.branch_code
 
-
 class Batch(models.Model):
     batch_name = models.CharField(max_length=50)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.batch_name
-
-from django.core.exceptions import ValidationError
 
 class Subject(models.Model):
     SUBJECT_TYPE_CHOICES = [
@@ -64,8 +62,6 @@ class Subject(models.Model):
 
     def __str__(self):
         return f"{self.subject_code} - {self.subject_name}"
-
-
 
 class Lab(models.Model):
     subject = models.ForeignKey(
@@ -107,7 +103,6 @@ class Lab(models.Model):
     def __str__(self):
         return f"{self.lab_name} - {self.subject.subject_code} ({self.batch})"
 
-
 class FacultySubject(models.Model):
     SESSION_CHOICES = [
         ('theory', 'Theory'),
@@ -129,6 +124,7 @@ class FacultySubject(models.Model):
         Batch,
         on_delete=models.CASCADE,
         null=True,
+        default=None,
         blank=True
     )
 
@@ -176,12 +172,11 @@ class FacultySubject(models.Model):
             return f"{self.faculty} → {self.subject} (Lab - {self.batch})"
         return f"{self.faculty} → {self.subject} (Theory)"
 
-
-
 class StudentSubject(models.Model):
     SESSION_CHOICES = [
         ('theory', 'Theory'),
         ('lab', 'Lab'),
+        ('both', 'Both'),
     ]
 
     student = models.ForeignKey(
@@ -266,7 +261,6 @@ class StudentSubject(models.Model):
         if self.session_type == 'lab':
             return f"{self.student} → {self.subject} (Lab - {self.batch})"
         return f"{self.student} → {self.subject} (Theory)"
-
 
 class Attendance(models.Model):
     SESSION_CHOICES = [
