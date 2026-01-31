@@ -1,3 +1,4 @@
+import csv
 import re
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -6,6 +7,11 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from .models import Lab, Batch, StudentSubject , Subject, FacultySubject
 from accounts.views import *
+import requests
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_GET
 
 # Create your views here.
 
@@ -33,6 +39,7 @@ def get_faculty_subject_list(request):
         if faculty.id not in faculty_map:
             faculty_map[faculty.id] = {
                 "id": f"{get_initials(faculty.branch.branch_name)}_{faculty.id}",
+                "ID": faculty.id,
                 "name": faculty.name,
                 "branch": faculty.branch.branch_name,
                 "subjects": []
@@ -112,10 +119,14 @@ def enroll_students_subjects(request):
         ]
         print("Generated Student IDs:", student_ids)
         students = Student.objects.filter(roll_no__in=student_ids)
+        print(students)
         print("Students found:", students.count())
         assigned_count = 0
 
         for student in students:
+            if student.semester.id != int(semester_id):
+                print(f"Skipping {student.roll_no}: Semester mismatch.")
+                continue
             for subject_id in subject_ids:
                 subject = Subject.objects.get(id=subject_id)
 
@@ -161,4 +172,149 @@ def enroll_students_subjects(request):
                 assigned_count += 1
         print(f"{assigned_count} enrollments created successfully!")
         messages.success(request, f"{assigned_count} enrollments created successfully!")
-        return redirect('adminDashboard_view')
+        return redirect('AdminDashboard_view')
+
+def get_student_enrollments(request):
+    enrollments = StudentSubject.objects.select_related(
+        'student', 'subject'
+    )
+
+    student_map = {}
+
+    for e in enrollments:
+        s = e.student
+
+        if s.id not in student_map:
+            student_map[s.id] = {
+                "id": s.id,
+                "name": s.name,
+                "roll": s.roll_no,
+                "semester": s.semester.semester_number,
+                "section": f"{s.branch.branch_code} - {s.batch.batch_name} Batch",
+                "subjects": set()
+            }
+
+        student_map[s.id]["subjects"].add(
+            get_initials(e.subject.subject_name)
+        )
+    
+    for student in student_map.values():
+        student["subjects"] = list(student["subjects"])
+
+    return JsonResponse({"students": list(student_map.values())})
+
+def get_student_subjects(request, student_id):
+    enrollments = StudentSubject.objects.filter(student_id=student_id).select_related('subject')
+
+    data = {
+        "name": enrollments.first().student.name,
+        "roll": enrollments.first().student.roll_no,
+        "subjects": []
+    }
+
+    for e in enrollments:
+        data["subjects"].append({
+            "name": get_initials(e.subject.subject_name),
+            "session_type": e.session_type,
+            "enrollment_id": e.id
+        })
+
+    return JsonResponse(data)
+
+def delete_enrollment(request, enrollment_id):
+    e = StudentSubject.objects.get(id=enrollment_id)
+    student_id = e.student.id
+    e.delete()
+    return JsonResponse({"success": True, "student_id": student_id})
+
+def get_faculty_subjects(request, faculty_id):
+
+    qs = FacultySubject.objects.filter(faculty_id=faculty_id).select_related('subject','batch','faculty')
+
+    first = qs.first()
+    data = {
+        "name": first.faculty.name if first else "",
+        "code": first.faculty.id if first else "",
+        "subjects": []
+    }
+
+    for e in qs:
+        data["subjects"].append({
+            "id": e.id,
+            "subject_code": e.subject.subject_code,
+            "subject_name": get_initials(e.subject.subject_name),
+            "session_type": e.session_type,
+            "batch": e.batch.batch_name if e.batch else None
+        })
+
+    return JsonResponse(data)
+
+def delete_faculty_subject(request, fs_id):
+    FacultySubject.objects.filter(id=fs_id).delete()
+    return JsonResponse({"success": True})
+
+@require_GET
+@csrf_exempt
+def bulk_register_students_auto(request):
+
+    SHEET_URL = "https://docs.google.com/spreadsheets/d/1nIkWXwaZA5Hrt906mykupHvEfdF2ZUAlw4PvlW8OzkU/export?format=csv"
+
+    try:
+        response = requests.get(SHEET_URL)
+        response.raise_for_status()
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": "Failed to fetch Google Sheet"})
+
+    decoded = response.content.decode('utf-8').splitlines()
+    reader = csv.DictReader(decoded)
+
+    count = 0
+    skipped = 0
+
+    for row in reader:
+        try:
+            semester = Semester.objects.get(semester_number=row['Semester'])
+            branch = Branch.objects.get(branch_code=row['Branch'])
+            batch = Batch.objects.get(batch_name=row['Batch'], semester=semester)
+
+            roll = row['Enrollment Number']
+            name = row['Full Name']
+            email = row['College Email_id']
+            phone = row['Phone Number']
+
+            if User.objects.filter(username=roll).exists():
+                skipped += 1
+                continue
+
+            user = User.objects.create_user(
+                username=roll,
+                email=email,
+                password=phone
+            )
+
+            group = Group.objects.get(name="Student")
+            user.groups.add(group)
+
+            Student.objects.get_or_create(
+                roll_no=roll,
+                defaults={
+                    'user': user,
+                    'name': name,
+                    'email': email,
+                    'phone_number': phone,
+                    'semester': semester,
+                    'branch': branch,
+                    'batch': batch
+                }
+            )
+
+            count += 1
+
+        except Exception as e:
+            print("Row error:", e)
+
+    return JsonResponse({
+        "status": "success",
+        "message": f"{count} students imported, {skipped} skipped (already exist)"
+    })
+

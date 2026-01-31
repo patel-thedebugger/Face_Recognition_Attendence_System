@@ -35,7 +35,12 @@ urlpatterns = [
     path('register/', register_view, name='Register'),
     path('Admin/link-faculty-subject/', link_faculty_subject, name='link_faculty_subject'),
     path('Admin/enroll-students-subjects/', enroll_students_subjects, name='enroll_students_subjects'),
-
+    path('ajax/get-student-enrollments/', get_student_enrollments, name='get_student_enrollments'),
+    path('ajax/get-student-subjects/<int:student_id>/', get_student_subjects, name='get_student_subjects'),
+    path('ajax/delete-enrollment/<int:enrollment_id>/', delete_enrollment, name='delete_enrollment'),
+    path('ajax/faculty-subjects/<int:faculty_id>/', get_faculty_subjects, name='get_faculty_subjects'),
+    path('ajax/delete-faculty-subject/<int:fs_id>/', delete_faculty_subject, name='delete_faculty_subject'),
+    path('auto-import-students/', bulk_register_students_auto, name='bulk_register_students_auto'),
 
     path('admin/', admin.site.urls),
 ]

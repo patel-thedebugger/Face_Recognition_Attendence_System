@@ -170,7 +170,7 @@
                                 </div>
                                 <h3 class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Students
                                 </h3>
-                                <p class="text-3xl font-extrabold text-slate-900 mt-1">12,480</p>
+                                <p class="text-3xl font-extrabold text-slate-900 mt-1">{{ total_students }}</p>
                             </div>
                             <div class="stat-card">
                                 <div class="flex items-center justify-between mb-4">
@@ -181,7 +181,7 @@
                                         class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-full">Static</span>
                                 </div>
                                 <h3 class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Faculty</h3>
-                                <p class="text-3xl font-extrabold text-slate-900 mt-1">842</p>
+                                <p class="text-3xl font-extrabold text-slate-900 mt-1">{{ total_faculty }}</p>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -398,6 +398,16 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div id="facultyEditModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+                                    <div class="bg-white rounded-xl w-[520px] p-6 shadow-2xl relative">
+                                        <h2 class="text-lg font-bold mb-2">Edit Faculty Subjects</h2>
+                                        <div id="facultyModalTitle" class="text-sm text-slate-500 mb-4"></div>
+
+                                        <div id="facultyModalSubjects" class="space-y-2 max-h-56 overflow-y-auto"></div>
+
+                                        <button onclick="closeFacultyModal()" class="mt-4 w-full py-2 bg-slate-100 rounded-lg">Close</button>
+                                    </div>
+                                </div>
                                 <div
                                     class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
                                     <p class="text-[11px] font-bold text-slate-500 uppercase">Showing 2 of 24 Registered
@@ -442,10 +452,9 @@
                                         <span class="material-symbols-outlined !text-lg">person_add</span> Add New
                                         Student
                                     </button>
-                                    <button
+                                    <button onclick="importStudents()"
                                         class="flex items-center gap-2 px-5 py-2.5 bg-primary-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-900/20 hover:scale-[1.02] transition-all">
-                                        <span class="material-symbols-outlined !text-lg">how_to_reg</span> Assign
-                                        Subjects
+                                        <span class="material-symbols-outlined !text-lg">how_to_reg</span> Bulk Enroll
                                     </button>
                                 </div>
                             </div>
@@ -542,122 +551,8 @@
                                                     Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="divide-y divide-slate-100">
-                                            <tr class="hover:bg-slate-50/80 transition-colors group">
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center gap-3">
-                                                        <div class="size-8 rounded-full bg-slate-200 bg-cover bg-center"
-                                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBW_SmWlEaOPDtaPJ3WvTmziSsmppYhxoVamfZrQjTqrYzKlBSdCnXpfvm1fQHzsRu3ZlGgeF1pUcsE5nXc-qW2jS80RLXZhaBT4eMO-jn7kbY3zVzti0h7EL3QN6MeDumsVr8ShcH02oEPwB6tnot2UFlrkIDqmvb3lpodbLJsrInvhNL2f5lxR0xn6Af_JrKq4xfs_yPYifKzyOCsoyyn1mpicv4w3Vt1OdfoTwK_1w5MFgV6vPER1IMRgE8e5whR9z4Gtnjr_No4')">
-                                                        </div>
-                                                        <div class="flex flex-col">
-                                                            <span class="font-bold text-slate-800 text-sm">Alexander
-                                                                Pierce</span>
-                                                            <span class="text-[10px] text-slate-400">CS-B Section</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 font-extrabold text-primary-navy text-sm">2024CS012
-                                                </td>
-                                                <td class="px-6 py-4 text-center font-bold text-slate-700 text-sm">4
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex flex-wrap gap-1.5">
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS204</span>
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS205</span>
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS206</span>
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-bold">+2
-                                                            more</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-right">
-                                                    <div class="flex justify-end gap-2">
-                                                        <button
-                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">visibility</span></button>
-                                                        <button
-                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">edit</span></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="hover:bg-slate-50/80 transition-colors group">
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center gap-3">
-                                                        <div class="size-8 rounded-full bg-slate-200 bg-cover bg-center"
-                                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCcUhJ1IQ0V5we1We48LgE40c3e350A5ZYBPmEZeMZboVM4ZrnUFCBww-q_Ho4uZ59ZIAXcsVYJL0hQ42zUeEUWnGGMsS0-BXcDUy2l5h205U4KwcmFeQk79gQgf4dIWpMtDT04uTrU5ptHZgFSVV0p9JGXBveIzOa9dkx40dlYsIiN9pVKlw9kMQgzDWaD35KD2GNzxJqwObirgxP9r0msEOD149N3HPlrHJDsPLgNbCQJ322cN8jpdGjc0WYIv8A0ZmDhpjkSHoTB')">
-                                                        </div>
-                                                        <div class="flex flex-col">
-                                                            <span class="font-bold text-slate-800 text-sm">Emma
-                                                                Richardson</span>
-                                                            <span class="text-[10px] text-slate-400">CS-A Section</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 font-extrabold text-primary-navy text-sm">2024CS045
-                                                </td>
-                                                <td class="px-6 py-4 text-center font-bold text-slate-700 text-sm">4
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex flex-wrap gap-1.5">
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS204</span>
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS210</span>
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">HS102</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-right">
-                                                    <div class="flex justify-end gap-2">
-                                                        <button
-                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">visibility</span></button>
-                                                        <button
-                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">edit</span></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="hover:bg-slate-50/80 transition-colors group">
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center gap-3">
-                                                        <div class="size-8 rounded-full bg-slate-200 bg-cover bg-center"
-                                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDA2hKgyFumjICgUvnh6niMG1EzJF1HzqSnqty2FkhZ6LR5zDXNmunsxPfLJ9VIVo8-2S2arpzKBX4dYYcE0TxIiYPWMUPvJslROz_Q8_DxyrqRLBmQb10E9Ng5pT_vhmoIj1Qyo0rPou9D01kVdwS7bpoTLJbbGt196qt8P1-1ElQxeU6ZJkzsxdH3sIW7ViuBzbrBOiGnZuTbtb9Oz-w4eDo3p9UbToOm63urd-9ch4-NtWiGinBDVeiVLcP6F8TX9Xfak8hqDpJm')">
-                                                        </div>
-                                                        <div class="flex flex-col">
-                                                            <span class="font-bold text-slate-800 text-sm">Liam
-                                                                Gallagher</span>
-                                                            <span class="text-[10px] text-slate-400">CS-B Section</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 font-extrabold text-primary-navy text-sm">2024CS089
-                                                </td>
-                                                <td class="px-6 py-4 text-center font-bold text-slate-700 text-sm">2
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex flex-wrap gap-1.5">
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">CS101</span>
-                                                        <span
-                                                            class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">MA102</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-right">
-                                                    <div class="flex justify-end gap-2">
-                                                        <button
-                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">visibility</span></button>
-                                                        <button
-                                                            class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"><span
-                                                                class="material-symbols-outlined !text-lg">edit</span></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        <tbody id="studentTableBody" class="divide-y divide-slate-100">
+                                            <!-- Student rows will be populated here via JavaScript -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -1006,166 +901,177 @@
             </main>
         </div>
     </div>
-        <div id="studentPopupWrapper" class="fixed inset-0 z-50 hidden flex items-center justify-center">
-            <!-- DARK BACKGROUND -->
-            <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeStudentPopup()">
-            </div>
-
-            <!-- CENTER ALIGN CONTAINER -->
-            <div class="relative flex items-center justify-center min-h-screen p-4">
-
-                <!-- 🔽 YOUR EXISTING POPUP (UNCHANGED) -->
-                <div id="studentPopup"
-                    class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
-
-                    <div
-                        class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-10">
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="size-10 bg-primary-navy/10 text-primary-navy rounded-xl flex items-center justify-center">
-                                <span class="material-symbols-outlined">person_add</span>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-extrabold text-slate-900 leading-none">Add New Student</h2>
-                                <p class="text-xs text-slate-500 mt-1 font-medium">Register a new student and enroll biometric data</p>
-                            </div>
-                        </div>
-                        <button onclick="closeStudentPopup()" class="text-slate-400 hover:text-slate-600 transition-colors">
-                            <span class="material-symbols-outlined">close</span>
-                        </button>
-                    </div>
-                    <div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
-                        <form class="space-y-8" method="POST" action="{% url 'register_student' %}" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="space-y-4">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span
-                                        class="text-[10px] font-bold text-primary-navy bg-primary-navy/5 px-2 py-0.5 rounded uppercase tracking-wider">Step
-                                        1</span>
-                                    <h3 class="text-xs font-bold uppercase text-slate-400 tracking-widest">Personal
-                                        Information
-                                    </h3>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="space-y-1.5">
-                                        <label
-                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Full
-                                            Name</label>
-                                        <input name="name"
-                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
-                                            placeholder="Johnathan Doe" type="text" />
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label
-                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Email
-                                            Address</label>
-                                        <input name="email"
-                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
-                                            placeholder="j.doe@university.edu" type="email" />
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label
-                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Roll
-                                            Number</label>
-                                        <input name="roll_no"
-                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
-                                            placeholder="e.g. 2024CS001" type="text" />
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label
-                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Academic
-                                            Semester</label>
-                                        <select name="semester"
-                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all">
-                                            {% for sem in Semesters %}
-                                            <option value="{{ sem.id }}">Semester {{ sem.semester_number }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label
-                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Phone Number</label>
-                                        <input name="phone"
-                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
-                                            placeholder="+91 9876543210" type="tel" />
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label
-                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Branch</label>
-                                        <select name="branch"
-                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all">
-                                            {% for branch in Branch %}
-                                            <option value="{{ branch.id }}">{{ branch.branch_name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    <div class="space-y-1.5 ">
-                                        <label
-                                            class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Batch</label>
-                                        <select name="batch"
-                                            class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all">
-                                            {%for batch in Batches %}
-                                            <option value="{{ batch.id }}">{{ batch.batch_name }}</option>
-                                            {% endfor %}
-
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="space-y-4 pt-4 border-t border-slate-100">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span
-                                        class="text-[10px] font-bold text-primary-navy bg-primary-navy/5 px-2 py-0.5 rounded uppercase tracking-wider">Step
-                                        2</span>
-                                    <h3 class="text-xs font-bold uppercase text-slate-400 tracking-widest">Biometric / Face
-                                        Data
-                                        Enrollment</h3>
-                                </div>
-                                <div
-                                    class="bg-slate-50 border border-dashed border-slate-300 rounded-2xl p-8 flex flex-col items-center justify-center text-center group hover:bg-slate-100 transition-colors cursor-pointer">
-                                    <div
-                                        class="size-16 bg-white border border-slate-200 rounded-full flex items-center justify-center text-primary-navy shadow-sm mb-4 group-hover:scale-110 transition-transform">
-                                        <span class="material-symbols-outlined !text-3xl">add_a_photo</span>
-                                    </div>
-                                    <p class="text-sm font-bold text-slate-700">Upload Reference Photo</p>
-                                    <p class="text-xs text-slate-400 mt-1 max-w-[280px]">High-quality JPG or PNG. Ensure
-                                        neutral
-                                        expression and clear lighting for face recognition accuracy.</p>
-                                    <input class="hidden" id="photo-upload" type="file" />
-                                    <button
-                                        class="mt-4 px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 shadow-sm hover:shadow-md transition-all"
-                                        onclick="document.getElementById('photo-upload').click()" type="button">
-                                        Browse Files
-                                    </button>
-                                </div>
-                                <div class="flex items-start gap-3 p-4 bg-blue-50/50 rounded-xl border border-blue-100">
-                                    <span class="material-symbols-outlined text-blue-500 !text-xl">info</span>
-                                    <p class="text-[11px] text-blue-700 leading-relaxed font-medium">
-                                        The student will be required to perform a 3D depth-scan verification at their first
-                                        physical kiosk check-in after this record is created.
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                class="px-8 py-5 bg-slate-50 border-t border-slate-200 flex justify-end gap-3 sticky bottom-0 z-10">
-                                <button 
-                                    onclick="closeStudentPopup()"
-                                    class="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-200 transition-all">
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    class="px-8 py-2.5 bg-primary-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-900/20 hover:scale-[1.02] transition-all flex items-center gap-2">
-                                    <span class="material-symbols-outlined !text-lg">check_circle</span> Save Student
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    
-                </div> <!-- studentPopup -->
-            </div>
+    <div id="studentPopupWrapper" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+        <!-- DARK BACKGROUND -->
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeStudentPopup()">
         </div>
 
+        <!-- CENTER ALIGN CONTAINER -->
+        <div class="relative flex items-center justify-center min-h-screen p-4">
+
+            <!-- 🔽 YOUR EXISTING POPUP (UNCHANGED) -->
+            <div id="studentPopup"
+                class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+
+                <div
+                    class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-10">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="size-10 bg-primary-navy/10 text-primary-navy rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined">person_add</span>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-extrabold text-slate-900 leading-none">Add New Student</h2>
+                            <p class="text-xs text-slate-500 mt-1 font-medium">Register a new student and enroll biometric data</p>
+                        </div>
+                    </div>
+                    <button onclick="closeStudentPopup()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                    <form class="space-y-8" method="POST" action="{% url 'register_student' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span
+                                    class="text-[10px] font-bold text-primary-navy bg-primary-navy/5 px-2 py-0.5 rounded uppercase tracking-wider">Step
+                                    1</span>
+                                <h3 class="text-xs font-bold uppercase text-slate-400 tracking-widest">Personal
+                                    Information
+                                </h3>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-1.5">
+                                    <label
+                                        class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Full
+                                        Name</label>
+                                    <input name="name"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
+                                        placeholder="Johnathan Doe" type="text" />
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label
+                                        class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Email
+                                        Address</label>
+                                    <input name="email"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
+                                        placeholder="j.doe@university.edu" type="email" />
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label
+                                        class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Roll
+                                        Number</label>
+                                    <input name="roll_no"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
+                                        placeholder="e.g. 2024CS001" type="text" />
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label
+                                        class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Academic
+                                        Semester</label>
+                                    <select name="semester"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all">
+                                        {% for sem in Semesters %}
+                                        <option value="{{ sem.id }}">Semester {{ sem.semester_number }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label
+                                        class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Phone Number</label>
+                                    <input name="phone"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all"
+                                        placeholder="+91 9876543210" type="tel" />
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label
+                                        class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Branch</label>
+                                    <select name="branch"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all">
+                                        {% for branch in Branch %}
+                                        <option value="{{ branch.id }}">{{ branch.branch_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="space-y-1.5 ">
+                                    <label
+                                        class="text-[11px] font-bold uppercase text-slate-500 tracking-wider ml-1">Batch</label>
+                                    <select name="batch"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy transition-all">
+                                        {%for batch in Batches %}
+                                        <option value="{{ batch.id }}">{{ batch.batch_name }}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4 pt-4 border-t border-slate-100">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span
+                                    class="text-[10px] font-bold text-primary-navy bg-primary-navy/5 px-2 py-0.5 rounded uppercase tracking-wider">Step
+                                    2</span>
+                                <h3 class="text-xs font-bold uppercase text-slate-400 tracking-widest">Biometric / Face
+                                    Data
+                                    Enrollment</h3>
+                            </div>
+                            <div
+                                class="bg-slate-50 border border-dashed border-slate-300 rounded-2xl p-8 flex flex-col items-center justify-center text-center group hover:bg-slate-100 transition-colors cursor-pointer">
+                                <div
+                                    class="size-16 bg-white border border-slate-200 rounded-full flex items-center justify-center text-primary-navy shadow-sm mb-4 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined !text-3xl">add_a_photo</span>
+                                </div>
+                                <p class="text-sm font-bold text-slate-700">Upload Reference Photo</p>
+                                <p class="text-xs text-slate-400 mt-1 max-w-[280px]">High-quality JPG or PNG. Ensure
+                                    neutral
+                                    expression and clear lighting for face recognition accuracy.</p>
+                                <input class="hidden" id="photo-upload" type="file" />
+                                <button
+                                    class="mt-4 px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 shadow-sm hover:shadow-md transition-all"
+                                    onclick="document.getElementById('photo-upload').click()" type="button">
+                                    Browse Files
+                                </button>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-blue-50/50 rounded-xl border border-blue-100">
+                                <span class="material-symbols-outlined text-blue-500 !text-xl">info</span>
+                                <p class="text-[11px] text-blue-700 leading-relaxed font-medium">
+                                    The student will be required to perform a 3D depth-scan verification at their first
+                                    physical kiosk check-in after this record is created.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="px-8 py-5 bg-slate-50 border-t border-slate-200 flex justify-end gap-3 sticky bottom-0 z-10">
+                            <button 
+                                onclick="closeStudentPopup()"
+                                class="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-200 transition-all">
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                class="px-8 py-2.5 bg-primary-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-900/20 hover:scale-[1.02] transition-all flex items-center gap-2">
+                                <span class="material-symbols-outlined !text-lg">check_circle</span> Save Student
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div> <!-- studentPopup -->
+        </div>
+    
+    </div>
+
+    <div id="editModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl w-[500px] p-6 shadow-2xl relative">
+            <h2 class="text-lg font-bold mb-4">Edit Enrollment</h2>
+
+            <div id="modalStudentName" class="text-sm text-slate-500 mb-3"></div>
+
+            <div id="modalSubjects" class="space-y-2 max-h-48 overflow-y-auto"></div>
+
+            <button onclick="closeModal()" class="mt-4 w-full py-2 bg-slate-100 rounded-lg">Close</button>
+        </div>
     </div>
 </body>
 <script>
@@ -1174,7 +1080,6 @@
         popup.classList.remove("hidden");
         popup.classList.add("flex");
     }
-
     function closeStudentPopup() {
         const popup = document.getElementById("studentPopupWrapper");
         popup.classList.add("hidden");
@@ -1191,7 +1096,6 @@
     document.getElementById("assignmentType").addEventListener("change", loadLabs);
     document.getElementById("semesterSelect").addEventListener("change", loadLabs);
     document.getElementById("semesterSelect").addEventListener("change", loadSubjectsFaculty);
-    
     document.addEventListener("DOMContentLoaded", load_Subject_Faculty);
 
     function load_Subject_Faculty() {
@@ -1251,7 +1155,7 @@
 
                         <td class="px-6 py-4 text-right">
                             <div class="flex justify-end gap-2">
-                                <button class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors">
+                                <button onclick="openFacultyEditModal(${item.ID})" class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors">
                                     <span class="material-symbols-outlined !text-lg">edit</span>
                                 </button>
                                 <button class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors">
@@ -1340,6 +1244,183 @@
                 
             });
     }
+    function loadStudentTable() {
+        const tbody = document.getElementById("studentTableBody");
+
+        fetch("/ajax/get-student-enrollments/")
+            .then(res => res.json())
+            .then(data => {
+                tbody.innerHTML = "";
+
+                if (data.students.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400">No students found</td></tr>`;
+                    return;
+                }
+
+                data.students.forEach(student => {
+
+                    let subjectsHTML = "";
+                    let extraCount = 0;
+
+                    student.subjects.forEach((sub, index) => {
+                        if (index < 3) {
+                            subjectsHTML += `<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">${sub}</span>`;
+                        } else {
+                            extraCount++;
+                        }
+                    });
+
+                    if (extraCount > 0) {
+                        subjectsHTML += `<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-bold">+${extraCount} more</span>`;
+                    }
+
+                    const initials = student.name.split(" ").map(w => w[0]).slice(0,2).join("");
+
+                    tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50/80 transition-colors group">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="size-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
+                                    ${initials}
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-slate-800 text-sm">${student.name}</span>
+                                    <span class="text-[10px] text-slate-400">${student.section}</span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="px-6 py-4 font-extrabold text-primary-navy text-sm">${student.roll}</td>
+                        <td class="px-6 py-4 text-center font-bold text-slate-700 text-sm">${student.semester}</td>
+
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1.5">
+                                ${subjectsHTML}
+                            </div>
+                        </td>
+
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end gap-2">
+                                <button class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg">
+                                    <span class="material-symbols-outlined !text-lg">visibility</span>
+                                </button>
+                                <button onclick="openEditModal(${student.id})" class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg">
+                                    <span class="material-symbols-outlined !text-lg">edit</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
+            });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadStudentTable);
+    //Edit Faculty Modal
+    
+    function openFacultyEditModal(facultyId) {
+        fetch(`/ajax/faculty-subjects/${facultyId}/`)
+            .then(res => res.json())
+            .then(data => {
+            document.getElementById("facultyModalTitle").innerText =
+                data.name + " (" + data.code + ")";
+
+            const box = document.getElementById("facultyModalSubjects");
+            box.innerHTML = "";
+
+            data.subjects.forEach(s => {
+                box.innerHTML += `
+                <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
+                    <div class="text-sm">
+                    <span class="font-medium">${s.subject_code} - ${s.subject_name}</span>
+                    <span class="text-slate-400 text-xs ml-1">(${s.session_type}${s.batch ? " - " + s.batch : ""})</span>
+                    </div>
+                    <button onclick="deleteFacultySubject(${s.id}, ${facultyId})"
+                    class="text-red-500 hover:text-red-700 text-sm font-bold">Remove</button>
+                </div>`;
+            });
+
+            document.getElementById("facultyEditModal").classList.remove("hidden");
+            document.getElementById("facultyEditModal").classList.add("flex");
+            });
+    }
+
+    function closeFacultyModal() {
+        document.getElementById("facultyEditModal").classList.add("hidden");
+    }
+
+    function deleteFacultySubject(fsId, facultyId) {
+        fetch(`/ajax/delete-faculty-subject/${fsId}/`, {
+            method: "DELETE",
+            headers: { "X-CSRFToken": "{{ csrf_token }}" }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+            openFacultyEditModal(facultyId); // refresh modal list
+            load_Subject_Faculty();          // refresh table
+            }
+        });
+    }
+
+    //Bulk Enrollment Modal
+
+    function importStudents() {
+        fetch("{% url 'bulk_register_students_auto' %}")
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                loadStudentTable(); // refresh table if you have it
+            })
+            .catch(err => alert("Import failed"));
+    }
+
+    // Edit Enrollment Modal
+    function openEditModal(studentId) {
+        fetch(`/ajax/get-student-subjects/${studentId}/`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("modalStudentName").innerText =
+                    data.name + " (" + data.roll + ")";
+
+                const container = document.getElementById("modalSubjects");
+                container.innerHTML = "";
+
+                data.subjects.forEach(sub => {
+                    container.innerHTML += `
+                    <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
+                        <span class="text-sm font-medium">${sub.name}</span>
+                        <span
+                        class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold uppercase">${sub.session_type}</span>
+                                               
+                        <button onclick="removeSubject(${sub.enrollment_id})"
+                            class="text-red-500 hover:text-red-700 text-sm font-bold">Remove</button>
+                    </div>`;
+                });
+
+                document.getElementById("editModal").classList.remove("hidden");
+                document.getElementById("editModal").classList.add("flex");
+            });
+    }
+
+    function closeModal() {
+        document.getElementById("editModal").classList.add("hidden");
+    }
+
+    function removeSubject(enrollmentId) {
+        fetch(`/ajax/delete-enrollment/${enrollmentId}/`, {
+            method: "DELETE",
+            headers: { "X-CSRFToken": "{{ csrf_token }}" }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                loadStudentTable();  // refresh table
+                openEditModal(data.student_id); // reload modal
+            }
+        });
+    }
+
+    
     // Load subjects on page load for default semester
     window.onload = loadSubjectsStudents;
     window.onload = loadSubjectsFaculty;

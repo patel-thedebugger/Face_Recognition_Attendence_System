@@ -34,6 +34,8 @@ def AdminDashboard_view(request):
         'Students': Student.objects.all(),
         'Labs': Lab.objects.all(),
         'FacultySubjects': FacultySubject.objects.all(),
+        'total_students': Student.objects.count(),
+        'total_faculty': Faculty.objects.count(),
     })
 
 def register_student(request):

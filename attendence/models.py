@@ -225,35 +225,6 @@ class StudentSubject(models.Model):
             raise ValidationError("Batch semester must match subject semester.")
 
     def save(self, *args, **kwargs):
-        """
-        If subject has THEORY + LAB:
-        auto-create BOTH enrollments
-        """
-        if self.subject.has_theory_and_lab:
-            with transaction.atomic():
-                # THEORY (no batch)
-                StudentSubject.objects.get_or_create(
-                    student=self.student,
-                    subject=self.subject,
-                    session_type='theory',
-                    batch=None
-                )
-
-                # LAB (batch required)
-                if not self.batch:
-                    raise ValidationError(
-                        "Batch is required to enroll LAB for this subject."
-                    )
-
-                StudentSubject.objects.get_or_create(
-                    student=self.student,
-                    subject=self.subject,
-                    session_type='lab',
-                    batch=self.batch
-                )
-            return  # ⛔ Prevent partial save
-
-        # Normal save
         self.clean()
         super().save(*args, **kwargs)
 
