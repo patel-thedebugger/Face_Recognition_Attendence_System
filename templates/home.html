@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CVM University Attendance Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2e799e",
+                        "background-light": "#f9fafb",
+                        "background-dark": "#182125",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+    <body class="bg-background-light dark:bg-background-dark text-[#121517] dark:text-white transition-colors duration-200">
+    <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+        <!-- Navigation Header -->
+        <header
+            class="sticky top-0 z-50 w-full border-b border-solid border-[#f1f3f4] dark:border-[#2e3a40] bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-20 lg:px-40 py-4">
+            <div class="mx-auto flex max-w-[1200px] items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="text-primary flex items-center">
+                        <svg class="size-8" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_6_330)">
+                                <path clip-rule="evenodd"
+                                    d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z"
+                                    fill="currentColor" fill-rule="evenodd"></path>
+                            </g>
+                            <defs>
+                                <clippath id="clip0_6_330">
+                                    <rect fill="white" height="48" width="48"></rect>
+                                </clippath>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-[#121517] dark:text-white text-lg font-extrabold leading-none tracking-tight">CVM
+                            UNIVERSITY</h2>
+                        <span class="text-[10px] uppercase tracking-[0.2em] font-medium text-primary">Attendance
+                            Portal</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6 md:gap-8">
+                    <nav class="hidden md:flex items-center gap-6">
+                        <a class="text-sm font-semibold hover:text-primary transition-colors" href="#">System Status</a>
+                        <a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Help</a>
+                    </nav>
+                    <div class="h-10 w-10 overflow-hidden rounded-full border-2 border-primary/20 bg-primary/10">
+                        <div class="bg-center bg-no-repeat bg-cover size-full" data-alt="Default user profile avatar"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCJ0K1yCNbVElhXp3jXrDy22WiBG6-NODsa87omZnQ0XzCHZVemsGNUuakzz_ziJUlVLijaR0iW6MlxR-mermz_31g4ygNbFEnVPCX7lvGc3P3BRHyxoazfWpqdMLYIZFGuYk1yMBhNbntWxPyWAipYP6nCnPmfT0yiRMsEpN8fOzhC1cnpayht25HSxPw48YWRRkg_tJ8HAPB8MicA3olJ4PAHWIHzdQvh7xxct2ygKCbSUYsLCEseCnTexmUMZdtcZlGYfctpPjT_");'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1">
+            <!-- Hero Section -->
+            <section class="px-6 md:px-20 lg:px-40 py-10">
+                <div class="mx-auto max-w-[1200px]">
+                    <div
+                        class="relative overflow-hidden rounded-xl bg-primary/5 dark:bg-white/5 p-8 md:p-16 border border-primary/10">
+                        <div class="relative z-10 flex flex-col items-center text-center gap-6 max-w-3xl mx-auto">
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-wider uppercase">
+                                <span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                                Live Biometric Authentication
+                            </div>
+                            <h1
+                                class="text-[#121517] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] md:text-5xl lg:text-6xl">
+                                Academic Excellence Through <span class="text-primary">Smart Attendance</span>
+                            </h1>
+                            <p class="text-[#687a82] dark:text-gray-400 text-lg md:text-xl font-normal max-w-2xl">
+                                Secure, face-recognition powered portal for staff and students. Eliminate manual tracking
+                                with institutional-grade AI.
+                            </p>
+                            <div class="flex gap-4">
+                                <button
+                                    class="flex min-w-[160px] cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold transition-transform active:scale-95 shadow-lg shadow-primary/20">
+                                    Get Started
+                                </button>
+                                <button
+                                    class="flex min-w-[160px] cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-white dark:bg-transparent border-2 border-primary/20 text-primary dark:text-white text-base font-bold transition-colors hover:bg-primary/5">
+                                    System Guide
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Abstract Background Elements -->
+                        <div class="absolute -right-20 -bottom-20 size-80 rounded-full bg-primary/5 blur-3xl"></div>
+                        <div class="absolute -left-20 -top-20 size-80 rounded-full bg-primary/5 blur-3xl"></div>
+                    </div>
+                </div>
+            </section>
+            <!-- Portal Selection Section -->
+            <section class="px-6 md:px-20 lg:px-40 py-12">
+                <div class="mx-auto max-w-[1200px]">
+                    <div class="flex flex-col md:flex-row items-end justify-between mb-8 px-4">
+                        <div class="flex flex-col gap-2">
+                            <h2 class="text-2xl md:text-3xl font-extrabold text-[#121517] dark:text-white tracking-tight">
+                                Select Your Portal</h2>
+                            <p class="text-[#687a82] dark:text-gray-400">Choose your destination to log in and manage your
+                                records.</p>
+                        </div>
+                        <div class="hidden md:block h-[1px] flex-1 bg-primary/10 mx-10 mb-4"></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+                        <!-- Faculty Card -->
+                        <div
+                            class="group relative flex flex-col gap-6 rounded-xl border border-[#dde2e4] dark:border-[#2e3a40] bg-white dark:bg-background-dark p-8 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1">
+                            <div
+                                class="flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined !text-4xl">supervisor_account</span>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <h3 class="text-2xl font-bold text-[#121517] dark:text-white">Faculty Portal</h3>
+                                <p class="text-[#687a82] dark:text-gray-400 text-base leading-relaxed">
+                                    Manage your lecture schedules, initiate real-time biometric class scanning, and download
+                                    comprehensive attendance reports for your courses.
+                                </p>
+                            </div>
+                            <div class="mt-4 pt-6 border-t border-gray-100 dark:border-gray-800">
+                                <form action="{% url 'FacultyLogin_view' %}" method="get">
+                                    <button type="submit"
+                                        class="flex w-full items-center justify-center gap-2 rounded-lg h-12 bg-primary text-white font-bold transition-all hover:brightness-110">
+                                        Enter as Faculty
+                                        <span class="material-symbols-outlined !text-lg">login</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Student Card -->
+                        <div
+                            class="group relative flex flex-col gap-6 rounded-xl border border-[#dde2e4] dark:border-[#2e3a40] bg-white dark:bg-background-dark p-8 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1">
+                            <div
+                                class="flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined !text-4xl">school</span>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <h3 class="text-2xl font-bold text-[#121517] dark:text-white">Student Portal</h3>
+                                <p class="text-[#687a82] dark:text-gray-400 text-base leading-relaxed">
+                                    Access your attendance history, verify your biometric profile status, and view upcoming
+                                    class schedules and institutional announcements.
+                                </p>
+                            </div>
+                            <div class="mt-4 pt-6 border-t border-gray-100 dark:border-gray-800">
+                                <form action="{% url 'StudentLogin_view' %}" method="get">
+                                    <button type="submit"
+                                        class="flex w-full items-center justify-center gap-2 rounded-lg h-12 bg-primary/10 text-primary font-bold transition-all hover:bg-primary hover:text-white">
+                                        Enter as Student
+                                        <span class="material-symbols-outlined !text-lg">login</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Admin Card -->
+                        <div
+                            class="group relative flex flex-col gap-6 rounded-xl border border-[#dde2e4] dark:border-[#2e3a40] bg-white dark:bg-background-dark p-8 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1">
+                            
+                            <div
+                                class="flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined !text-4xl">admin_panel_settings</span>
+                            </div>
+
+                            <div class="flex flex-col gap-3">
+                                <h3 class="text-2xl font-bold text-[#121517] dark:text-white">Admin Portal</h3>
+                                <p class="text-[#687a82] dark:text-gray-400 text-base leading-relaxed">
+                                    Full system control for administrators. Manage faculty, students, branches, attendance data, and security
+                                    configurations.
+                                </p>
+                            </div>
+
+                            <div class="mt-4 pt-6 border-t border-gray-100 dark:border-gray-800">
+                                <form action="{% url 'adminlogin_view' %}" method="get">
+                                    <button type="submit"
+                                        class="flex w-full items-center justify-center gap-2 rounded-lg h-12 bg-red-600 text-white font-bold transition-all hover:brightness-110">
+                                        Enter as Admin
+                                        <span class="material-symbols-outlined !text-lg">login</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Features Section -->
+            <section class="px-6 md:px-20 lg:px-40 py-20 bg-white/50 dark:bg-black/10">
+                <div class="mx-auto max-w-[1200px]">
+                    <div class="flex flex-col gap-12 px-4">
+                        <div class="flex flex-col gap-4 text-center max-w-2xl mx-auto">
+                            <h2
+                                class="text-3xl md:text-4xl font-black text-[#121517] dark:text-white tracking-tighter uppercase">
+                                Why Smart Attendance?</h2>
+                            <p class="text-[#687a82] dark:text-gray-400 text-lg">Our biometric system ensures precision and
+                                security for all academic records using state-of-the-art infrastructure.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Feature 1 -->
+                            <div
+                                class="flex flex-col gap-4 rounded-xl border border-[#dde2e4] dark:border-[#2e3a40] bg-white dark:bg-background-dark p-6 transition-all hover:border-primary/50">
+                                <div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined">face</span>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <h3 class="text-lg font-bold text-[#121517] dark:text-white leading-tight">Face
+                                        Recognition</h3>
+                                    <p class="text-[#687a82] dark:text-gray-400 text-sm leading-relaxed">Advanced
+                                        deep-learning algorithms for sub-second verification even in crowded halls.</p>
+                                </div>
+                            </div>
+                            <!-- Feature 2 -->
+                            <div
+                                class="flex flex-col gap-4 rounded-xl border border-[#dde2e4] dark:border-[#2e3a40] bg-white dark:bg-background-dark p-6 transition-all hover:border-primary/50">
+                                <div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined">sync</span>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <h3 class="text-lg font-bold text-[#121517] dark:text-white leading-tight">Real-time
+                                        Sync</h3>
+                                    <p class="text-[#687a82] dark:text-gray-400 text-sm leading-relaxed">Attendance records
+                                        are instantly synchronized with the central academic management system.</p>
+                                </div>
+                            </div>
+                            <!-- Feature 3 -->
+                            <div
+                                class="flex flex-col gap-4 rounded-xl border border-[#dde2e4] dark:border-[#2e3a40] bg-white dark:bg-background-dark p-6 transition-all hover:border-primary/50">
+                                <div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined">verified_user</span>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <h3 class="text-lg font-bold text-[#121517] dark:text-white leading-tight">Secure Data
+                                    </h3>
+                                    <p class="text-[#687a82] dark:text-gray-400 text-sm leading-relaxed">AES-256 encryption
+                                        protects all biometric templates and personal identifiable information.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Institutional Footer -->
+        <footer
+            class="bg-white dark:bg-background-dark border-t border-[#f1f3f4] dark:border-[#2e3a40] px-6 md:px-20 lg:px-40 py-10">
+            <div class="mx-auto max-w-[1200px] flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="flex flex-col gap-2 text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-2">
+                        <span class="size-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                        <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Biometric Server
+                            Online</span>
+                    </div>
+                    <p class="text-[#687a82] text-sm">© 2024 CVM University. All rights reserved.</p>
+                </div>
+                <div class="flex items-center gap-8">
+                    <a class="text-sm font-medium text-[#687a82] hover:text-primary" href="#">Privacy Policy</a>
+                    <a class="text-sm font-medium text-[#687a82] hover:text-primary" href="#">Terms of Service</a>
+                    <a class="text-sm font-medium text-[#687a82] hover:text-primary" href="#">Security Audit</a>
+                </div>
+                <div class="flex gap-4">
+                    <div
+                        class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined !text-lg">mail</span>
+                    </div>
+                    <div
+                        class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined !text-lg">language</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    </body>
+</html>

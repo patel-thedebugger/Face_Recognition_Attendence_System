@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login | CVM University</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+</head>
+
+<body class="bg-background-light min-h-screen flex items-center justify-center">
+
+<div class="w-full max-w-md bg-white rounded-xl shadow-2xl p-10">
+    <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold mt-4">Admin Login</h2>
+        <p class="text-gray-500">Authorized administrators only</p>
+    </div>
+
+    <form method="post" action="{% url 'adminloginsubmit_view' %}" class="space-y-6">
+        {% csrf_token %}
+
+        <div>
+            <label class="text-sm font-semibold">Email</label>
+            <input type="email" name="email"
+                class="w-full mt-1 rounded-lg border-gray-300 focus:ring-red-500 focus:border-red-500"
+                placeholder="admin@cvm.edu" required>
+        </div>
+
+        <div>
+            <label class="text-sm font-semibold">Password</label>
+            <input type="password" name="password"
+                class="w-full mt-1 rounded-lg border-gray-300 focus:ring-red-500 focus:border-red-500"
+                placeholder="••••••••" required>
+        </div>
+
+        <button type="submit"
+            class="w-full h-12 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition">
+            Login as Admin
+        </button>
+    </form>
+
+    {% if messages %}
+        <div class="mt-4 text-sm text-red-600">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
