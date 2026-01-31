@@ -78,7 +78,8 @@
                             <p class="text-sm text-[#687a82] dark:text-gray-400 mt-1">Please enter your credentials to
                                 initiate face recognition.</p>
                         </div>
-                        <!-- Form -->
+                        <form action="{% url 'StudentDash_view' %}" method="post">
+                            {% csrf_token %}
                         <div class="flex flex-col gap-4">
                             <!-- Roll Number Field -->
                             <div class="flex flex-col gap-2">
@@ -89,7 +90,7 @@
                                 </label>
                                 <input
                                     class="form-input flex w-full rounded-lg text-[#121517] dark:text-white border-[#dde2e4] dark:border-[#3a4a52] bg-white dark:bg-[#182125] focus:border-primary focus:ring-1 focus:ring-primary h-12 px-4 text-base transition-all placeholder:text-[#687a82]"
-                                    placeholder="e.g. 2024CS101" type="text" />
+                                    placeholder="e.g. 2024CS101" type="text" name="roll" />
                             </div>
                             <!-- Password Field -->
                             <div class="flex flex-col gap-2">
@@ -104,7 +105,7 @@
                                 <div class="relative flex items-center">
                                     <input
                                         class="form-input flex w-full rounded-lg text-[#121517] dark:text-white border-[#dde2e4] dark:border-[#3a4a52] bg-white dark:bg-[#182125] focus:border-primary focus:ring-1 focus:ring-primary h-12 pl-4 pr-12 text-base transition-all placeholder:text-[#687a82]"
-                                        placeholder="••••••••" type="password" />
+                                        placeholder="••••••••" type="password" name="pass"/>
                                     <button
                                         class="absolute right-3 text-[#687a82] hover:text-primary transition-colors">
                                         <span class="material-symbols-outlined">visibility</span>
@@ -119,6 +120,7 @@
                                     class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </button>
                         </div>
+                        </form>
                         <!-- Footer Links inside Card -->
                         <div
                             class="pt-4 border-t border-[#dde2e4] dark:border-[#2a3439] flex flex-col items-center gap-3">

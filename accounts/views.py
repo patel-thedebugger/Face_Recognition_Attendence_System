@@ -22,9 +22,9 @@ def FacultyLogin_view(request):
         pwd = request.POST.get('password')
 
         user = authenticate(request, username=email, password=pwd)
-        print("EMAIL:", email)
-        print("PASSWORD:", pwd)
-        print("AUTH USER:", user)
+        # print("EMAIL:", email)
+        # print("PASSWORD:", pwd)
+        # print("AUTH USER:", user)
         if user is not None:
             login(request, user)
             return redirect('FacultyDashboard_view')
@@ -37,6 +37,22 @@ def FacultyDashboard_view(request):
     return render(request, 'Admin/Faculty_Dash.html')
 
 def StudentLogin_view(request):
+    return render(request, 'Student/Login.html')
+
+def StudentDash_view(request):
+    if request.method == 'POST':
+        roll = request.POST.get('roll')
+        pwd = request.POST.get('pass')
+
+        user = authenticate(request, username=roll, password=pwd)
+        # print("ROLL:", roll)
+        # print("PASSWORD:", pwd)
+        # print("AUTH USER:", user)
+        if user is not None:
+            login(request, user)
+            return render(request, 'Admin/Student_Dash.html')
+        else:
+            messages.error(request, "Invalid Credentials")
     return render(request, 'Student/Login.html')
 
 def register_view(request):
