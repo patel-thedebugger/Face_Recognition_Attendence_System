@@ -37,6 +37,10 @@ def FacultyDashboard_view(request):
     faculty = Faculty.objects.get(user=request.user)
     return render(request, 'Admin/Faculty_Dash.html', {'faculty': faculty})
 
+def faculty_logout(request):
+    logout(request)
+    return redirect('FacultyLogin_view')
+
 def StudentLogin_view(request):
     return render(request, 'Student/Login.html')
 

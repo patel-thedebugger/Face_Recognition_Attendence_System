@@ -24,6 +24,7 @@ urlpatterns = [
     path('Faculty/Login/', FacultyLogin_view, name='FacultyLogin_view'),
     path('Faculty/', FacultyDashboard_view, name='FacultyDashboard_view'),
     path("Faculty/subjects/", get_faculty_subjects, name="faculty_subjects"),
+    path('Faculty/logout/', faculty_logout, name='faculty_logout'),
 
 
     path('Student/', StudentLogin_view, name='StudentLogin_view'),
