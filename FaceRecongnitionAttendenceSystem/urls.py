@@ -30,6 +30,7 @@ urlpatterns = [
     path('Student/', StudentLogin_view, name='StudentLogin_view'),
     path('Student/Dashboard/', StudentDash_view, name='StudentDash_view'),
     path("Faculty/students/", get_students_for_subject, name="get_students"),
+    path('Student/logout/', student_logout, name='student_logout'),
     
     path('Admin/', AdminDashboard_view, name='AdminDashboard_view'),
     path('Admin/Login/', adminlogin_view, name='adminlogin_view'),

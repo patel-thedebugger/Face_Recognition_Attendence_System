@@ -60,6 +60,10 @@ def StudentDash_view(request):
             messages.error(request, "Invalid Credentials")
     return render(request, 'Student/Login.html')
 
+def student_logout(request):
+    logout(request)
+    return redirect('StudentLogin_view')
+
 def register_view(request):
     return render(request, 'Faculty/Register.html')
 
