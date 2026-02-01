@@ -23,9 +23,12 @@ urlpatterns = [
     path('', home_view, name='home'),
     path('Faculty/Login/', FacultyLogin_view, name='FacultyLogin_view'),
     path('Faculty/', FacultyDashboard_view, name='FacultyDashboard_view'),
+    path("Faculty/subjects/", get_faculty_subjects, name="faculty_subjects"),
+
 
     path('Student/', StudentLogin_view, name='StudentLogin_view'),
     path('Student/Dashboard/', StudentDash_view, name='StudentDash_view'),
+    path("Faculty/students/", get_students_for_subject, name="get_students"),
     
     path('Admin/', AdminDashboard_view, name='AdminDashboard_view'),
     path('Admin/Login/', adminlogin_view, name='adminlogin_view'),

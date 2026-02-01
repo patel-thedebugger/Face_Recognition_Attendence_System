@@ -2,12 +2,12 @@ import csv
 import re
 from django.http import JsonResponse
 from django.shortcuts import render
+import requests
 from accounts.models import Faculty,Student
 from django.contrib import messages
 from django.shortcuts import redirect
 from .models import Lab, Batch, StudentSubject , Subject, FacultySubject
 from accounts.views import *
-import requests
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -318,3 +318,58 @@ def bulk_register_students_auto(request):
         "message": f"{count} students imported, {skipped} skipped (already exist)"
     })
 
+@login_required
+def get_faculty_subjects(request):
+    session_type = request.GET.get("session_type")
+    faculty = Faculty.objects.get(user=request.user)
+
+    qs = FacultySubject.objects.filter(
+        faculty=faculty,
+        session_type=session_type
+    ).select_related("subject", "batch")
+
+    data = []
+    for fs in qs:
+        label = fs.subject.subject_name
+        if fs.session_type == "lab":
+            label += f" ({fs.batch.batch_name})"
+
+        data.append({
+            "id": fs.id,   # IMPORTANT
+            "label": label,
+        })
+
+    return JsonResponse({"subjects": data})
+
+@login_required
+def get_students_for_subject(request):
+    fs_id = request.GET.get("faculty_subject_id")
+
+    if not fs_id:
+        return JsonResponse({"students": []})
+
+    faculty = Faculty.objects.get(user=request.user)
+
+    fs = FacultySubject.objects.select_related(
+        "subject", "batch"
+    ).get(id=fs_id, faculty=faculty)
+
+    # 🔥 MAIN FILTER
+    students_qs = StudentSubject.objects.filter(
+        subject=fs.subject,
+        session_type=fs.session_type
+    )
+
+    # Lab → batch required
+    if fs.session_type == "lab":
+        students_qs = students_qs.filter(batch=fs.batch)
+
+    data = []
+    for ss in students_qs.select_related("student"):
+        data.append({
+            "id": ss.student.id,
+            "roll": ss.student.enrollment_no,
+            "name": ss.student.name,
+        })
+
+    return JsonResponse({"students": data})
