@@ -39,6 +39,7 @@ urlpatterns = [
     path("Admin/Subjects/Edit/<int:id>/", edit_subject, name="edit_subject"),
     path("Admin/Subjects/Delete/<int:id>/", delete_subject, name="delete_subject"),
     path('Admin/Login/Submit/', adminloginsubmit_view, name='adminloginsubmit_view'),
+    path('Admin/logout/', admin_logout, name='admin_logout'),
 
     path('ajax/get-subjects/', get_subjects_by_semester, name='get_subjects'),
     path('ajax/get-faculty-subjects/', get_faculty_subject_list, name='get_faculty_subjects_list'),

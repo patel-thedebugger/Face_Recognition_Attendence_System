@@ -62,13 +62,17 @@ def StudentDash_view(request):
 
 def student_logout(request):
     logout(request)
-    return redirect('StudentLogin_view')
+    return render(request , 'home.html')
 
 def register_view(request):
     return render(request, 'Faculty/Register.html')
 
 def adminlogin_view(request):
     return render(request, 'Admin/Login.html')
+
+def admin_logout(request):
+    logout(request)
+    return render(request, 'home.html')
 
 def adminloginsubmit_view(request):
     if request.method == "POST":
