@@ -1177,7 +1177,10 @@
                                 <button onclick="openFacultyEditModal(${item.ID})" class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors">
                                     <span class="material-symbols-outlined !text-lg">edit</span>
                                 </button>
-                                <button class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors">
+
+                                
+
+                                <button class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors" onclick="deleteFaculty(${item.ID})">
                                     <span class="material-symbols-outlined !text-lg">delete</span>
                                 </button>
                             </div>
@@ -1337,11 +1340,14 @@
     //Edit Faculty Modal
     
     function openFacultyEditModal(facultyId) {
-        fetch(`/ajax/faculty-subjects/${facultyId}/`)
-            .then(res => res.json())
-            .then(data => {
+    fetch(`/ajax/faculty-subjects/${facultyId}/`)
+        .then(res => {
+            if (!res.ok) throw new Error("Failed to load");
+            return res.json();
+        })
+        .then(data => {
             document.getElementById("facultyModalTitle").innerText =
-                data.name + " (" + data.code + ")";
+                `${data.name} (${data.code})`;
 
             const box = document.getElementById("facultyModalSubjects");
             box.innerHTML = "";
@@ -1350,17 +1356,22 @@
                 box.innerHTML += `
                 <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
                     <div class="text-sm">
-                    <span class="font-medium">${s.subject_code} - ${s.subject_name}</span>
-                    <span class="text-slate-400 text-xs ml-1">(${s.session_type}${s.batch ? " - " + s.batch : ""})</span>
+                        <span class="font-medium">${s.subject_code} - ${s.subject_name}</span>
+                        <span class="text-slate-400 text-xs ml-1">
+                            (${s.session_type}${s.batch ? " - " + s.batch : ""})
+                        </span>
                     </div>
                     <button onclick="deleteFacultySubject(${s.id}, ${facultyId})"
-                    class="text-red-500 hover:text-red-700 text-sm font-bold">Remove</button>
+                        class="text-red-500 hover:text-red-700 text-sm font-bold">
+                        Remove
+                    </button>
                 </div>`;
             });
 
             document.getElementById("facultyEditModal").classList.remove("hidden");
             document.getElementById("facultyEditModal").classList.add("flex");
-            });
+        })
+        .catch(console.error);
     }
 
     function closeFacultyModal() {
@@ -1497,8 +1508,31 @@
 
 
     function closeEditBox() {
+        const editBox = document.getElementById("editBoxWrapper");
         editBox.classList.add("hidden");
     }
+
+
+    function deleteFaculty(facultyId) {
+    if (!confirm("Are you sure you want to delete this faculty assignment?")) {
+        return;
+    }
+
+    fetch(`/ajax/delete-faculty/${facultyId}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert("Faculty deleted successfully");
+            load_Subject_Faculty(); // reload table
+        }
+    });
+}
+
 
 </script>
 

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-s5!^t^ctt^_wbcl4slm9&1-6&wfm343grgc6s3kzdy#fx3$!dl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nondistortive-lavenia-nonmeteorologically.ngrok-free.dev','localhost']
+ALLOWED_HOSTS = ['nondistortive-lavenia-nonmeteorologically.ngrok-free.dev','localhost','127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = ['https://nondistortive-lavenia-nonmeteorologically.ngrok-free.dev']
 

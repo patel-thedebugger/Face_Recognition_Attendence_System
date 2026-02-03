@@ -319,27 +319,27 @@ def bulk_register_students_auto(request):
     })
 
 @login_required
-def get_faculty_subjects(request):
-    session_type = request.GET.get("session_type")
-    faculty = Faculty.objects.get(user=request.user)
+# def get_faculty_subjects(request):
+#     session_type = request.GET.get("session_type")
+#     faculty = Faculty.objects.get(user=request.user)
 
-    qs = FacultySubject.objects.filter(
-        faculty=faculty,
-        session_type=session_type
-    ).select_related("subject", "batch")
+#     qs = FacultySubject.objects.filter(
+#         faculty=faculty,
+#         session_type=session_type
+#     ).select_related("subject", "batch")
 
-    data = []
-    for fs in qs:
-        label = fs.subject.subject_name
-        if fs.session_type == "lab":
-            label += f" ({fs.batch.batch_name})"
+#     data = []
+#     for fs in qs:
+#         label = fs.subject.subject_name
+#         if fs.session_type == "lab":
+#             label += f" ({fs.batch.batch_name})"
 
-        data.append({
-            "id": fs.id,   # IMPORTANT
-            "label": label,
-        })
+#         data.append({
+#             "id": fs.id,   # IMPORTANT
+#             "label": label,
+#         })
 
-    return JsonResponse({"subjects": data})
+#     return JsonResponse({"subjects": data})
 
 @login_required
 def get_students_for_subject(request):
@@ -373,3 +373,8 @@ def get_students_for_subject(request):
         })
 
     return JsonResponse({"students": data})
+
+def delete_faculty(request, faculty_id):
+    print("Deleting faculty with ID:", faculty_id)
+    Faculty.objects.filter(id=faculty_id).delete()
+    return JsonResponse({"success": True})

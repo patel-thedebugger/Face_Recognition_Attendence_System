@@ -53,6 +53,7 @@ urlpatterns = [
     path('ajax/delete-enrollment/<int:enrollment_id>/', delete_enrollment, name='delete_enrollment'),
     path('ajax/faculty-subjects/<int:faculty_id>/', get_faculty_subjects, name='get_faculty_subjects'),
     path('ajax/delete-faculty-subject/<int:fs_id>/', delete_faculty_subject, name='delete_faculty_subject'),
+    path('ajax/delete-faculty/<int:faculty_id>/', delete_faculty, name='delete_faculty'),
     path('auto-import-students/', bulk_register_students_auto, name='bulk_register_students_auto'),
 
     path('admin/', admin.site.urls),
