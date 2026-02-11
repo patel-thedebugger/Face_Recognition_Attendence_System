@@ -35,7 +35,7 @@ def FacultyLogin_view(request):
 
 def FacultyDashboard_view(request):
     faculty = Faculty.objects.get(user=request.user)
-    return render(request, 'Admin/Faculty_Dash.html', {'faculty': faculty})
+    return render(request, 'Admin/Facultydash.html', {'faculty': faculty})
 
 def faculty_logout(request):
     logout(request)

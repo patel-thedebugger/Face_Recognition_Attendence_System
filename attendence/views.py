@@ -227,27 +227,27 @@ def delete_enrollment(request, enrollment_id):
     e.delete()
     return JsonResponse({"success": True, "student_id": student_id})
 
-def get_faculty_subjects(request, faculty_id):
+# def get_faculty_subjects(request, faculty_id):
 
-    qs = FacultySubject.objects.filter(faculty_id=faculty_id).select_related('subject','batch','faculty')
+#     qs = FacultySubject.objects.filter(faculty_id=faculty_id).select_related('subject','batch','faculty')
 
-    first = qs.first()
-    data = {
-        "name": first.faculty.name if first else "",
-        "code": first.faculty.id if first else "",
-        "subjects": []
-    }
+#     first = qs.first()
+#     data = {
+#         "name": first.faculty.name if first else "",
+#         "code": first.faculty.id if first else "",
+#         "subjects": []
+#     }
 
-    for e in qs:
-        data["subjects"].append({
-            "id": e.id,
-            "subject_code": e.subject.subject_code,
-            "subject_name": get_initials(e.subject.subject_name),
-            "session_type": e.session_type,
-            "batch": e.batch.batch_name if e.batch else None
-        })
+#     for e in qs:
+#         data["subjects"].append({
+#             "id": e.id,
+#             "subject_code": e.subject.subject_code,
+#             "subject_name": get_initials(e.subject.subject_name),
+#             "session_type": e.session_type,
+#             "batch": e.batch.batch_name if e.batch else None
+#         })
 
-    return JsonResponse(data)
+#     return JsonResponse(data)
 
 def delete_faculty_subject(request, fs_id):
     FacultySubject.objects.filter(id=fs_id).delete()
@@ -317,29 +317,64 @@ def bulk_register_students_auto(request):
         "status": "success",
         "message": f"{count} students imported, {skipped} skipped (already exist)"
     })
+@login_required
+def get_faculty_subjects_by_id(request, faculty_id):
+
+    faculty = Faculty.objects.get(id=faculty_id)
+
+    qs = FacultySubject.objects.filter(
+        faculty=faculty
+    ).select_related("subject", "batch")
+
+    data = []
+
+    for fs in qs:
+        subject = fs.subject
+        if fs.session_type == "theory":
+            label = f"{fs.subject.subject_name} (T)"
+        else:
+            label = f"{fs.subject.subject_name} ({fs.batch.batch_name})"
+
+        data.append({
+            "id": fs.subject.subject_code,       # FacultySubject.id
+            "label": label
+        })
+    return JsonResponse({"subjects": data})
+
 
 @login_required
-# def get_faculty_subjects(request):
-#     session_type = request.GET.get("session_type")
-#     faculty = Faculty.objects.get(user=request.user)
+def get_faculty_subjects(request):
+    session_type = request.GET.get("session_type")
+    sem_id = request.GET.get("semester_id")
 
-#     qs = FacultySubject.objects.filter(
-#         faculty=faculty,
-#         session_type=session_type
-#     ).select_related("subject", "batch")
+    faculty = Faculty.objects.get(user=request.user)
 
-#     data = []
-#     for fs in qs:
-#         label = fs.subject.subject_name
-#         if fs.session_type == "lab":
-#             label += f" ({fs.batch.batch_name})"
+    qs = FacultySubject.objects.filter(
+        faculty=faculty,
+        session_type=session_type
+    ).select_related("subject", "batch")
 
-#         data.append({
-#             "id": fs.id,   # IMPORTANT
-#             "label": label,
-#         })
+    # 🔥 SEMESTER FILTER (model-aware)
+    if session_type == "theory":
+        qs = qs.filter(subject__semester_id=sem_id)
 
-#     return JsonResponse({"subjects": data})
+    elif session_type == "lab":
+        qs = qs.filter(batch__semester_id=sem_id)
+
+    data = []
+
+    for fs in qs:
+        if fs.session_type == "theory":
+            label = f"{fs.subject.subject_name} (T)"
+        else:
+            label = f"{fs.subject.subject_name} ({fs.batch.batch_name})"
+
+        data.append({
+            "id": fs.id,       # FacultySubject.id
+            "label": label
+        })
+
+    return JsonResponse({"subjects": data})
 
 @login_required
 def get_students_for_subject(request):
@@ -368,7 +403,7 @@ def get_students_for_subject(request):
     for ss in students_qs.select_related("student"):
         data.append({
             "id": ss.student.id,
-            "roll": ss.student.enrollment_no,
+            "roll": ss.student.roll_no,
             "name": ss.student.name,
         })
 

@@ -1356,10 +1356,7 @@
                 box.innerHTML += `
                 <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
                     <div class="text-sm">
-                        <span class="font-medium">${s.subject_code} - ${s.subject_name}</span>
-                        <span class="text-slate-400 text-xs ml-1">
-                            (${s.session_type}${s.batch ? " - " + s.batch : ""})
-                        </span>
+                        <span class="font-medium">${s.id} - ${s.label}</span>
                     </div>
                     <button onclick="deleteFacultySubject(${s.id}, ${facultyId})"
                         class="text-red-500 hover:text-red-700 text-sm font-bold">
