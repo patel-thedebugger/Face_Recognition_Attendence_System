@@ -34,10 +34,13 @@
         body { font-family: 'Manrope', sans-serif; }
         .material-symbols-outlined { font-size: 24px; vertical-align: middle; }
         .nav-item-active {
-            @apply bg-primary-navy text-white shadow-md;
+            background-color: #1e3a8a; /* example for bg-primary-navy */
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(2,6,23,0.2);
         }
         .nav-item-inactive {
-            @apply text-slate-600 hover:bg-slate-100 hover:text-primary-navy transition-all duration-200;
+            color: #475569; /* text-slate-600 */
+            transition: all .2s;
         }
     </style>
 </head>
