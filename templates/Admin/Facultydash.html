@@ -156,109 +156,127 @@
                                 your current session.</p>
                         </div>
                     </div>
-                    
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div
-                            class="px-8 py-5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2 bg-blue-100 text-primary-navy rounded-lg">
-                                    <span class="material-symbols-outlined">how_to_reg</span>
+                    <form action="{% url 'mark_attendance' %}" method="POST">
+                    {% csrf_token %}
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                            <div
+                                class="px-8 py-5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 bg-blue-100 text-primary-navy rounded-lg">
+                                        <span class="material-symbols-outlined">how_to_reg</span>
+                                    </div>
+                                    <h2 class="text-lg font-bold text-slate-800">Take Attendance</h2>
                                 </div>
-                                <h2 class="text-lg font-bold text-slate-800">Take Attendance</h2>
-                            </div>
-                        </div>
-                        <div class="px-8 py-6 border-b border-slate-200">
-                            <div class="flex flex-wrap items-center gap-4">
-                                
-                                <div class="flex items-center gap-2">
-                                    <label
-                                        class="text-xs font-bold text-slate-500 uppercase tracking-wider">Semester:</label>
-                                    <select id = "sem_number"
-                                        class="bg-white border-slate-200 rounded-lg text-sm font-semibold focus:ring-primary-navy py-1.5 pr-8">
-                                        <option value = '1'>Semester 1</option>
-                                        <option value = '2'>Semester 2</option>
-                                        <option value = '3'>Semester 3</option>
-                                        <option value = '4'>Semester 4</option>
-                                        <option value = '5'>Semester 5</option>
-                                        <option value = '6'>Semester 6</option>
-                                        <option value = '7'>Semester 7</option>
-                                        <option value = '8'>Semester 8</option>
-                                    </select>
-                                </div>
+                                <div class="flex items-center gap-3 ml-auto">
+                                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                        Date:
+                                    </label>
 
-                                <div class="flex flex-wrap items-center gap-2" >
-                                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Session Type:</label>
-                                    <select
-                                        class="bg-white border-slate-200 rounded-lg text-sm font-semibold focus:ring-primary-navy py-1.0 pr-8"
-                                        id="sessionType">
-                                        <option value="theory">Theory</option>
-                                        <option value="lab">Practical</option>
-                                    </select>
-                                </div>
-
-                                <div class="flex items-center gap-2">
-                                    <label
-                                        class="text-xs font-bold text-slate-500 uppercase tracking-wider">Subject:</label>
-                                    <select
-                                        class="w-full bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm font-medium focus:ring-primary focus:border-primary"
-                                        id="subjectSelect">
-                                        <option value="">Select Subject</option>
-                                    </select>
+                                    <input 
+                                        type="date"
+                                        id="attendanceDate"
+                                        name="date"
+                                        class="bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy"
+                                        value="{{ today|date:'Y-m-d' }}"
+                                    />
                                 </div>
                             </div>
-                        </div>
-                        <div class="p-8">
-                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                                <div class="lg:col-span-7 space-y-4">
-                                    <form>
-                                        <div
-                                            class="bg-slate-50 border border-dashed border-slate-300 rounded-2xl p-8 flex flex-col items-center justify-center text-center group hover:bg-slate-100 transition-colors cursor-pointer">
+                            <div class="px-8 py-6 border-b border-slate-200">
+                                <div class="flex flex-wrap items-center gap-4">
+                                    
+                                    <div class="flex items-center gap-2">
+                                        <label
+                                            class="text-xs font-bold text-slate-500 uppercase tracking-wider">Semester:</label>
+                                        <select name="sem_number" id = "sem_number"
+                                            class="bg-white border-slate-200 rounded-lg text-sm font-semibold focus:ring-primary-navy py-1.5 pr-8">
+                                            <option value = '1'>Semester 1</option>
+                                            <option value = '2'>Semester 2</option>
+                                            <option value = '3'>Semester 3</option>
+                                            <option value = '4'>Semester 4</option>
+                                            <option value = '5'>Semester 5</option>
+                                            <option value = '6'>Semester 6</option>
+                                            <option value = '7'>Semester 7</option>
+                                            <option value = '8'>Semester 8</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex flex-wrap items-center gap-2" >
+                                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Session Type:</label>
+                                        <select name="sessionType"
+                                            class="bg-white border-slate-200 rounded-lg text-sm font-semibold focus:ring-primary-navy py-1.0 pr-8"
+                                            id="sessionType">
+                                            <option value="theory">Theory</option>
+                                            <option value="lab">Practical</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <label
+                                            class="text-xs font-bold text-slate-500 uppercase tracking-wider">Subject:</label>
+                                        <select name="subjectSelect"
+                                            class="w-full bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm font-medium focus:ring-primary focus:border-primary"
+                                            id="subjectSelect">
+                                            <option value="">Select Subject</option>
+                                        </select>
+                                    </div>
+                                    <input type="hidden" name="batch_id" value="{{ stu.batch.id }}" />
+                                    <input type="hidden" name="all_students" value="{{stu.id}}" />
+                                </div>
+                            </div>
+                            
+                            <div class="p-8">
+                                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                                    <div class="lg:col-span-7 space-y-4">
+                                        <form>
                                             <div
-                                                class="size-16 bg-white border border-slate-200 rounded-full flex items-center justify-center text-primary-navy shadow-sm mb-4 group-hover:scale-110 transition-transform">
-                                                <span class="material-symbols-outlined !text-3xl">add_a_photo</span>
+                                                class="bg-slate-50 border border-dashed border-slate-300 rounded-2xl p-8 flex flex-col items-center justify-center text-center group hover:bg-slate-100 transition-colors cursor-pointer">
+                                                <div
+                                                    class="size-16 bg-white border border-slate-200 rounded-full flex items-center justify-center text-primary-navy shadow-sm mb-4 group-hover:scale-110 transition-transform">
+                                                    <span class="material-symbols-outlined !text-3xl">add_a_photo</span>
+                                                </div>
+                                                <p class="text-sm font-bold text-slate-700">Upload Reference Photo</p>
+                                                <p class="text-xs text-slate-400 mt-1 max-w-[280px]">High-quality JPG or PNG. Ensure
+                                                    neutral
+                                                    expression and clear lighting for face recognition accuracy.</p>
+                                                <input class="hidden" id="photo-upload" type="file" />
+                                                <button
+                                                    class="mt-4 px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 shadow-sm hover:shadow-md transition-all"
+                                                    onclick="document.getElementById('photo-upload').click()" type="button">
+                                                    Browse Files
+                                                </button>
                                             </div>
-                                            <p class="text-sm font-bold text-slate-700">Upload Reference Photo</p>
-                                            <p class="text-xs text-slate-400 mt-1 max-w-[280px]">High-quality JPG or PNG. Ensure
-                                                neutral
-                                                expression and clear lighting for face recognition accuracy.</p>
-                                            <input class="hidden" id="photo-upload" type="file" />
-                                            <button
-                                                class="mt-4 px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 shadow-sm hover:shadow-md transition-all"
-                                                onclick="document.getElementById('photo-upload').click()" type="button">
-                                                Browse Files
+                                            <button type="submit"
+                                                class="w-full mt-4 py-3 bg-primary-navy text-white font-bold rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                                                <span class="material-symbols-outlined !text-xl">cloud_done</span> Start Biometric Attendance
                                             </button>
+
+                                        </form>
+                                    </div>
+                                    <div class="lg:col-span-5 flex flex-col h-[480px]">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <h3 class="font-bold text-slate-800">Student List</h3>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-[11px] font-bold text-slate-400 uppercase">Toggle
+                                                    All</span>
+                                                <input
+                                                    class="rounded border-slate-300 text-primary-navy focus:ring-primary-navy"
+                                                    type="checkbox" />
+                                            </div>
                                         </div>
-                                        <button type="submit"
+                                        <div id = "studentTableBody"
+                                            class="flex-1 overflow-y-auto border border-slate-200 rounded-xl divide-y divide-slate-100 bg-slate-50/30">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type = "submit"
                                             class="w-full mt-4 py-3 bg-primary-navy text-white font-bold rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-                                            <span class="material-symbols-outlined !text-xl">cloud_done</span> Start Biometric Attendance
+                                            <span class="material-symbols-outlined !text-xl">cloud_done</span> Submit Final
+                                            Attendance
                                         </button>
-
-                                    </form>
-
-                                </div>
-                                <div class="lg:col-span-5 flex flex-col h-[480px]">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <h3 class="font-bold text-slate-800">Student List</h3>
-                                        <div class="flex items-center gap-2">
-                                            <span class="text-[11px] font-bold text-slate-400 uppercase">Toggle
-                                                All</span>
-                                            <input
-                                                class="rounded border-slate-300 text-primary-navy focus:ring-primary-navy"
-                                                type="checkbox" />
-                                        </div>
-                                    </div>
-                                    <div id = "studentTableBody"
-                                        class="flex-1 overflow-y-auto border border-slate-200 rounded-xl divide-y divide-slate-100 bg-slate-50/30">
-                                        
-                                    </div>
-                                </div>
                             </div>
-                            <button
-                                        class="w-full mt-4 py-3 bg-primary-navy text-white font-bold rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-                                        <span class="material-symbols-outlined !text-xl">cloud_done</span> Submit Final
-                                        Attendance
-                                    </button>
                         </div>
+                    </form>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm flex gap-4">
@@ -345,7 +363,7 @@
 
                 data.subjects.forEach(sub => {
                     const opt = document.createElement("option");
-                    opt.value = sub.id;        // FacultySubject.id
+                    opt.value = sub.id + "|" + sub.s_id;        // FacultySubject.id + Subject.id
                     opt.textContent = sub.label;
                     subjectSelect.appendChild(opt);
                 });
@@ -364,13 +382,14 @@
       const studentTableBody = document.getElementById("studentTableBody");
 
       subjectSelect.addEventListener("change", function () {
-          const fsId = this.value;
+          const fsId = this.value.split("|")[0];   // FacultySubject.id
+          const sId = this.value.split("|")[1];    // Subject.id (not used currently, but can be useful for future extensions)
 
           studentTableBody.innerHTML = "";
 
           if (!fsId) return;
 
-          fetch(`/Faculty/students/?faculty_subject_id=${fsId}`)
+          fetch(`/Faculty/students/?faculty_subject_id=${fsId}&session_type=${sessionSelect.value}&subject_id=${sId}`)
               .then(res => res.json())
               .then(data => {
                   if (data.students.length === 0) {
@@ -382,6 +401,8 @@
                   }
 
                   data.students.forEach(stu => {
+
+                    const isPresent = stu.status === "present";
                       const row = `
                           <div
                                 class="p-4 flex items-center justify-between hover:bg-white transition-colors group">
@@ -396,11 +417,16 @@
                                         <p class="text-[10px] text-slate-400 mt-1">ID: ${stu.roll}</p>
                                     </div>
                                 </div>
+                                <input type="hidden" name="all_students" value="${stu.id}">
+
                                 <div class="flex items-center gap-4">
                                     <span
                                         class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold uppercase hidden group-hover:inline-block">Not
                                         Scanned</span>
                                     <input
+                                        name="present_students"
+                                        value="${stu.id}"
+                                        ${isPresent ? 'checked' : ''}
                                         class="size-5 rounded border-slate-300 text-primary-navy focus:ring-primary-navy"
                                         type="checkbox" />
                                 </div>

@@ -245,7 +245,7 @@ class Attendance(models.Model):
         'accounts.Faculty', on_delete=models.CASCADE
     )
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE, null=True, blank=True)
 
     session_type = models.CharField(max_length=10, choices=SESSION_CHOICES)
     date = models.DateField()

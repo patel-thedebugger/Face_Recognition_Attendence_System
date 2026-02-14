@@ -8,10 +8,12 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from .models import Lab, Batch, StudentSubject , Subject, FacultySubject
 from accounts.views import *
+from attendence.models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_GET
+from django.utils.timezone import now
 
 # Create your views here.
 
@@ -341,7 +343,6 @@ def get_faculty_subjects_by_id(request, faculty_id):
         })
     return JsonResponse({"subjects": data})
 
-
 @login_required
 def get_faculty_subjects(request):
     session_type = request.GET.get("session_type")
@@ -371,14 +372,19 @@ def get_faculty_subjects(request):
 
         data.append({
             "id": fs.id,       # FacultySubject.id
+            "s_id": fs.subject.id, # Subject.id
+            "session_type": fs.session_type,
             "label": label
         })
-
+    print("Faculty Subjects:", data)
     return JsonResponse({"subjects": data})
 
 @login_required
 def get_students_for_subject(request):
     fs_id = request.GET.get("faculty_subject_id")
+    session_type = request.GET.get("session_type")
+    subject_id = request.GET.get("subject_id")
+    date = request.GET.get("date") or now().date()  # Use current date if not provided
 
     if not fs_id:
         return JsonResponse({"students": []})
@@ -386,8 +392,8 @@ def get_students_for_subject(request):
     faculty = Faculty.objects.get(user=request.user)
 
     fs = FacultySubject.objects.select_related(
-        "subject", "batch"
-    ).get(id=fs_id, faculty=faculty)
+        "subject", "batch",
+    ).get(id=fs_id, faculty=faculty, session_type=session_type, subject_id=subject_id)
 
     # 🔥 MAIN FILTER
     students_qs = StudentSubject.objects.filter(
@@ -395,21 +401,85 @@ def get_students_for_subject(request):
         session_type=fs.session_type
     )
 
+    attendance_qs = Attendance.objects.filter(
+        subject=fs.subject,
+        faculty=faculty,
+        session_type=fs.session_type,
+        date=date,
+    )
+    print(date, fs.subject, fs.session_type)
+    print("attendance_qs:", attendance_qs)
     # Lab → batch required
     if fs.session_type == "lab":
         students_qs = students_qs.filter(batch=fs.batch)
+
+    if fs.session_type == "lab":
+        attendance_qs = attendance_qs.filter(batch=fs.batch)
+    
+    attendance_map = {
+        att.student_id: att.status
+        for att in attendance_qs
+    }
 
     data = []
     for ss in students_qs.select_related("student"):
         data.append({
             "id": ss.student.id,
+            "batch": ss.batch.id if ss.batch else None,
             "roll": ss.student.roll_no,
             "name": ss.student.name,
+            "status": attendance_map.get(ss.student.id, "null")
         })
-
+    
+    print("Student data:", data)
     return JsonResponse({"students": data})
 
 def delete_faculty(request, faculty_id):
     print("Deleting faculty with ID:", faculty_id)
     Faculty.objects.filter(id=faculty_id).delete()
     return JsonResponse({"success": True})
+
+
+@login_required
+def mark_attendance(request):
+    if request.method == "POST":
+        print(request.POST)
+        faculty = Faculty.objects.get(user=request.user)
+        Semester_id = request.POST.get("sem_number")
+        subject_id = request.POST.get("subjectSelect").split("|")[1]  # Subject.id from the combined value
+        session_type = request.POST.get("sessionType")
+        date = request.POST.get("date") or now().date()  # Use current date if not provided
+        total_students = request.POST.getlist("all_students")
+        total_students.remove('')  # Remove empty strings if any
+        students = Student.objects.filter(id__in=[int(x) for x in total_students]).select_related("user")
+        batch_id = request.POST.get("batch_id") if session_type == "lab" else None
+        
+        subject = Subject.objects.get(id=int(subject_id))
+        batch = Batch.objects.get(id=batch_id) if batch_id else None
+        present_ids = request.POST.getlist("present_students")
+        print("Present student IDs:", present_ids)
+        print(f"Marking attendance for Subject ID: {subject}, Date: {date}, Semester: {Semester_id}, Session Type: {session_type}, Batch ID: {batch}")
+    
+        print(students)
+        for s in students:
+            print(f"Processing student {s.roll_no} - Present IDs: {present_ids}")
+            status = "present" if str(s.id) in present_ids else "absent"
+            try:
+                 Attendance.objects.update_or_create(
+                    student=s,
+                    faculty=faculty,
+                    subject=subject,
+                    batch=batch,
+                    date=date,
+                    defaults={
+                        "session_type": session_type,
+                        "status": status
+                    }
+                )
+            except Exception as e:
+                print(f"Error marking attendance for {s.roll_no}: {e}")
+                messages.error(request, f"Error for {s.roll_no}: {e}")
+
+                continue
+
+        return redirect("FacultyDashboard_view")
