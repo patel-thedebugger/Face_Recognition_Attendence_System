@@ -1356,7 +1356,7 @@
                 box.innerHTML += `
                 <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
                     <div class="text-sm">
-                        <span class="font-medium">${s.id} - ${s.label}</span>
+                        <span class="font-medium">${s.code} - ${s.label}</span>
                     </div>
                     <button onclick="deleteFacultySubject(${s.id}, ${facultyId})"
                         class="text-red-500 hover:text-red-700 text-sm font-bold">
@@ -1375,8 +1375,8 @@
         document.getElementById("facultyEditModal").classList.add("hidden");
     }
 
-    function deleteFacultySubject(fsId, facultyId) {
-        fetch(`/ajax/delete-faculty-subject/${fsId}/`, {
+    function deleteFacultySubject(sId, facultyId) {
+        fetch(`/ajax/delete-faculty-subject/${sId}/`, {
             method: "DELETE",
             headers: { "X-CSRFToken": "{{ csrf_token }}" }
         })
@@ -1515,7 +1515,7 @@
         return;
     }
 
-    fetch(`/ajax/delete-faculty/${facultyId}/`, {
+    fetch(`/ajax/delete-faculty-subject/${facultyId}/`, {
         method: "POST",
         headers: {
             "X-CSRFToken": "{{ csrf_token }}"

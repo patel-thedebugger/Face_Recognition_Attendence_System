@@ -28,8 +28,8 @@ urlpatterns = [
     path('Faculty/logout/', faculty_logout, name='faculty_logout'),
 
 
-    path('Student/', StudentLogin_view, name='StudentLogin_view'),
-    path('Student/Dashboard/', StudentDash_view, name='StudentDash_view'),
+    path('Student/Login/', StudentLogin_view, name='StudentLogin_view'),
+    path('Student/', StudentDash_view, name='StudentDash_view'),
     path("Faculty/students/", get_students_for_subject, name="get_students"),
     path('Student/logout/', student_logout, name='student_logout'),
     

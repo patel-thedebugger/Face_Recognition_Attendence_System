@@ -252,7 +252,7 @@ def delete_enrollment(request, enrollment_id):
 #     return JsonResponse(data)
 
 def delete_faculty_subject(request, fs_id):
-    FacultySubject.objects.filter(id=fs_id).delete()
+    FacultySubject.objects.filter(faculty_id=fs_id).delete()
     return JsonResponse({"success": True})
 
 @require_GET
@@ -338,10 +338,11 @@ def get_faculty_subjects_by_id(request, faculty_id):
             label = f"{fs.subject.subject_name} ({fs.batch.batch_name})"
 
         data.append({
-            "id": fs.subject.subject_code,       # FacultySubject.id
+            "id" : fs.id,       # FacultySubject.id
+            "code": fs.subject.subject_code,       # FacultySubject.id
             "label": label
         })
-    return JsonResponse({"subjects": data})
+    return JsonResponse({ "name": faculty.name, "code": faculty.id, "subjects": data})
 
 @login_required
 def get_faculty_subjects(request):

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Student Attendance Profile Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet" />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-navy": "#1e3a8a",
+              "accent-blue": "#3b82f6",
+              "background-light": "#f1f5f9",
+              "surface-light": "#ffffff",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: { "DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+          },
+        },
+      }
+    </script>
+    <style type="text/tailwindcss">
+      body { font-family: 'Manrope', sans-serif; }
+          .material-symbols-outlined { font-size: 24px; vertical-align: middle; }
+          .nav-item-active {
+              background-color: #1e3a8a; /* example for bg-primary-navy */
+              color: #fff;
+              box-shadow: 0 4px 6px rgba(2,6,23,0.2);
+          }
+          .nav-item-inactive {
+              color: #475569; /* text-slate-600 */
+              transition: all .2s;
+          }
+      </style>
+  </head>
+
+  <body class="bg-background-light min-h-screen text-slate-800 transition-colors duration-200">
+    <div class="flex flex-col h-screen overflow-hidden">
+      <header class="flex items-center justify-between border-b border-white/10 bg-primary-navy px-8 py-3 sticky top-0 z-50 text-white">
+            
+        <div class="flex items-center gap-10">
+          <div class="flex items-center gap-3">
+              <div class="size-10 bg-white/10 rounded-lg flex items-center justify-center text-white">
+                  <span class="material-symbols-outlined !text-2xl">account_balance</span>
+              </div>
+              <div class="flex flex-col">
+                  <h2 class="text-white text-lg font-extrabold leading-none tracking-tight">GCET Portal</h2>
+                  <p class="text-[10px] text-blue-200 font-semibold uppercase tracking-[0.2em]">Student Dashboard
+                  </p>
+              </div>
+          </div>
+        </div>
+        <div class="flex flex-1 justify-end gap-6 items-center">
+          <div class="flex items-center gap-6">
+            <div class="text-right">
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">
+                  Today's Date
+                </p>
+                <p class="text-sm font-bold tdate"></p>
+            </div>
+            <div class="h-10 w-[1px] bg-gray-200 dark:bg-gray-800"></div>
+              <button class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+                  <span class="material-symbols-outlined">settings</span>
+              </button>
+          </div>
+        </div>
+      </header>
+      
+      <div class="flex flex-1 overflow-hidden">
+        <aside class="w-72 bg-white border-r border-slate-200 hidden lg:flex flex-col p-6 gap-8 shrink-0 overflow-y-auto">
+          <div class="flex flex-col items-center text-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <div class="size-16 rounded-full bg-slate-200 mb-3 border-2 border-white shadow-sm overflow-hidden">
+              <img alt="Student" class="size-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8luN9sZUPHcZEDRbmYTyiqxLBNH1iFBx8pp59usV12gmXLE73MLT1HrjgHa6rQGZvNrFDMJXsCAgCBaw0_N7xlEqeBbZUHCtEaIsUB-b3mdRgiSoIxfdQ1pyGQ7OTHNQ0kxPbtMFz-46DISVzh3cZWYXyLoxQ5_JRFuVAkRftIQEUS076MqNS6X9tqLGCZofjHrL3tk41YCJ47ed45cpYFekmJ44iuS_RFv_o0_1_7giRxtf_az26tqYbZqaZsKdXHemieCpa2l7P" />
+            </div>
+            <h3 class="text-sm font-bold text-slate-900">{{ student.name }}</h3>
+            <p class="text-[11px] text-slate-500 font-semibold mt-1">Roll No: {{ student.roll_no }}</p>
+            <span class="mt-2 px-2 py-0.5 bg-green-100 text-green-700 text-[9px] font-bold uppercase rounded-full">Active
+              Session</span>
+          </div>
+          <nav class="flex flex-col gap-2">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">Main Menu</p>
+            <a class="nav-item-active flex items-center gap-3 px-4 py-3 rounded-xl" href="#">
+              <span class="material-symbols-outlined">dashboard</span>
+              <span class="text-sm font-bold">My Profile</span>
+            </a>
+            
+          </nav>
+          <div class="mt-auto space-y-4">
+            <div class="p-4 bg-primary-navy/5 rounded-2xl border border-primary-navy/10">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-primary-navy !text-lg">support_agent</span>
+                <p class="text-[10px] font-bold text-primary-navy uppercase tracking-wider">Help Desk</p>
+              </div>
+              <p class="text-[11px] font-medium text-slate-600">Encountering attendance issues? Contact support.</p>
+            </div>
+            <form action="{% url 'student_logout' %}">
+            {% csrf_token %}
+            <button  
+              class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-colors">
+              <span class="material-symbols-outlined">logout</span>
+              <span class="text-sm font-bold">Sign Out</span>
+            </button>
+            </form>
+          </div>
+        </aside>
+        <main class="flex-1 overflow-y-auto p-8">
+          <div class="max-w-6xl mx-auto space-y-8">
+            <div class="space-y-4">
+              <div class="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <span>Student Portal</span>
+                <span class="material-symbols-outlined !text-xs">chevron_right</span>
+                <span class="text-primary-navy">Profile Dashboard</span>
+              </div>
+              <div>
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Student Attendance Profile</h1>
+                <p class="text-slate-500 mt-1">Review your personal details and academic attendance progress for the
+                  current semester.</p>
+              </div>
+            </div>
+
+            <!-- Student Overview -->
+            <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+              <div class="px-8 py-5 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
+                <div class="p-2 bg-blue-100 text-primary-navy rounded-lg">
+                  <span class="material-symbols-outlined">person</span>
+                </div>
+                <h2 class="text-lg font-bold text-slate-800">Student Overview</h2>
+              </div>
+              <div class="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="space-y-1">
+                  <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Enrolled Course</p>
+                  <p class="text-sm font-bold text-slate-800">B.Tech {{ student.branch.branch_name }}</p>
+                </div>
+                <div class="space-y-1">
+                  <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Current Semester</p>
+                  <p class="text-sm font-bold text-slate-800">{{ student.semester }}</p>
+                </div>
+                <div class="space-y-1">
+                  <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Email Address</p>
+                  <p class="text-sm font-bold text-slate-800">{{ student.email }}</p>
+                </div>
+                <div class="space-y-1">
+                  <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Phone Number</p>
+                  <p class="text-sm font-bold text-slate-800">{{ student.phone_number }}</p>
+                </div>
+              </div>
+            </section>
+            <!-- Subject Enrollment and Attendance -->
+            <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+              <div class="px-8 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="p-2 bg-blue-100 text-primary-navy rounded-lg">
+                    <span class="material-symbols-outlined">list_alt</span>
+                  </div>
+                  <h2 class="text-lg font-bold text-slate-800">Subject Enrollment</h2>
+                </div>
+                <span
+                  class="text-xs font-bold text-slate-500 uppercase px-3 py-1 bg-white border border-slate-200 rounded-full">Spring
+                  2023-24</span>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50/50 border-b border-slate-100">
+                      <th class="px-8 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Subject Name
+                      </th>
+                      <th class="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">
+                        Classes Held</th>
+                      <th class="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">
+                        Attended</th>
+                      <th class="px-8 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Attendance
+                        Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for sub in Subjects %}
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                      
+                      <!-- SUBJECT NAME -->
+                      <td class="px-8 py-4">
+                          <p class="text-sm font-bold text-slate-800 leading-none">
+                              {{ sub.name }} ({{ sub.session_type }})
+                          </p>
+                          <p class="text-[10px] text-slate-400 mt-1">
+                              {{ sub.code }} • {{ sub.faculty|default:"Not Assigned" }}
+                          </p>
+                      </td>
+
+                      <!-- TOTAL CLASSES -->
+                      <td class="px-6 py-4 text-center text-sm font-semibold text-slate-600">
+                          {{ sub.total }}
+                      </td>
+
+                      <!-- ATTENDED -->
+                      <td class="px-6 py-4 text-center text-sm font-bold text-primary-navy">
+                          {{ sub.attended }}
+                      </td>
+
+                      <!-- PERCENTAGE -->
+                      <td class="px-8 py-4">
+                          <div class="flex items-center gap-4">
+
+                              <div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                  <div class="h-full
+                                        {% if sub.percentage|default:0 >= 75 %}
+                                            bg-green-500
+                                        {% elif sub.percentage|default:0 >= 50 %}
+                                            bg-yellow-500
+                                        {% else %}
+                                            bg-red-500
+                                        {% endif %}
+                                    "
+                                    style="width: {{ sub.percentage|default:0 }}% ">
+                                  </div>
+                              </div>
+
+                              <span class="text-sm font-bold 
+                                  {% if sub.percentage >= 75 %}
+                                      text-green-600
+                                  {% elif sub.percentage >= 50 %}
+                                      text-yellow-600
+                                  {% else %}
+                                      text-red-600
+                                  {% endif %}
+                                  w-12 text-right">
+                                  {{ sub.percentage }}%
+                              </span>
+
+                          </div>
+                      </td>
+
+                  </tr>
+                  {% empty %}
+                  <tr>
+                      <td colspan="4" class="text-center py-6 text-slate-400">
+                          No subjects enrolled.
+                      </td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <!-- Attendance Insights -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm flex gap-4">
+                <div class="size-12 rounded-xl bg-blue-50 flex items-center justify-center text-primary-navy shrink-0">
+                  <span class="material-symbols-outlined">fact_check</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-800">Attendance Policy</h3>
+                  <p class="text-xs text-slate-500 mt-1">Minimum 75% attendance is required for each subject to appear in
+                    final exams.</p>
+                </div>
+              </div>
+              <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm flex gap-4">
+                <div class="size-12 rounded-xl bg-blue-50 flex items-center justify-center text-primary-navy shrink-0">
+                  <span class="material-symbols-outlined">face_6</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-800">Biometric Status</h3>
+                  <p class="text-xs text-slate-500 mt-1">Face ID profile is verified. Last biometric update: 15 days ago.
+                  </p>
+                </div>
+              </div>
+              <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm flex gap-4">
+                <div class="size-12 rounded-xl bg-blue-50 flex items-center justify-center text-primary-navy shrink-0">
+                  <span class="material-symbols-outlined">download</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-800">Monthly Report</h3>
+                  <p class="text-xs text-slate-500 mt-1">Download your detailed attendance report for the month of
+                    September.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+  </body>
+  <script>
+    function upd_date() {
+
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", " Friday", "Saturday"];
+        const currdate = new Date();
+        let mon = months[currdate.getMonth()];
+        let day = days[currdate.getDay()];
+        let year = currdate.getFullYear();
+        let date = currdate.getDate();
+        let full_date = day + ", " + mon + " " + date + ", " + year;
+        console.log(typeof (full_date));
+        let date_elems = document.getElementsByClassName("tdate");
+        console.log(date_elems);
+        for (let i = 0; i < date_elems.length; i++) {
+        date_elems = date_elems[i];
+        }
+        date_elems.innerHTML = full_date;
+    }
+    upd_date();
+  </script>
+</html>

@@ -7,10 +7,11 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db import transaction
 from django.contrib.auth import authenticate, login, logout
-from attendence.models import Branch
+from attendence.models import *
 from accounts.models import Faculty , Student
 from django.contrib.auth.models import User, Group
 from attendence.models import Subject, Lab, Batch, Semester, FacultySubject
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home_view(request):
@@ -42,9 +43,6 @@ def faculty_logout(request):
     return redirect('FacultyLogin_view')
 
 def StudentLogin_view(request):
-    return render(request, 'Student/Login.html')
-
-def StudentDash_view(request):
     if request.method == 'POST':
         roll = request.POST.get('roll')
         pwd = request.POST.get('pass')
@@ -54,12 +52,102 @@ def StudentDash_view(request):
         # print("PASSWORD:", pwd)
         # print("AUTH USER:", user)
         if user is not None:
-            login(request, user)
-            return render(request, 'Admin/Student_Dash.html')
+            if user.groups.filter(name="Student").exists():
+                login(request, user)
+                return redirect('StudentDash_view')
         else:
             messages.error(request, "Invalid Credentials")
+            
     return render(request, 'Student/Login.html')
 
+@login_required
+def StudentDash_view(request):
+    student = Student.objects.get(user=request.user)
+
+    enrollments = StudentSubject.objects.filter(
+        student=student
+    ).select_related("subject", "batch")
+
+    subject_data = []
+
+    for ss in enrollments:
+
+        # ---------- THEORY ----------
+        if ss.session_type in ["theory", "both"]:
+            faculty = FacultySubject.objects.filter(
+                subject=ss.subject,
+                session_type="theory"
+            ).select_related("faculty")
+            faculty = faculty.first()  # Get the first matching faculty
+            f_id = faculty.faculty.id if faculty else None
+            f_branch = faculty.faculty.branch.branch_code if faculty else None
+
+            f_id = str(f_branch) + " " + str(f_id) if f_id else None
+            theory_qs = Attendance.objects.filter(
+                student=student,
+                subject=ss.subject,
+                session_type="theory"
+            )
+
+            total_theory = theory_qs.count()
+            attended_theory = theory_qs.filter(status="present").count()
+
+            theory_percentage = (
+                round((attended_theory / total_theory) * 100, 2)
+                if total_theory > 0 else 0
+            )
+
+            subject_data.append({
+                "name": ss.subject.subject_name,
+                "code": ss.subject.subject_code,
+                "session_type": "Theory",
+                "faculty": faculty.faculty.name if faculty else None,
+                "f_id": f_id,
+                "total": total_theory,
+                "attended": attended_theory,
+                "percentage": theory_percentage
+            })
+
+        # ---------- LAB ----------
+        if ss.session_type in ["lab", "both"]:
+
+            lab_qs = Attendance.objects.filter(
+                student=student,
+                subject=ss.subject,
+                session_type="lab"
+            )
+
+            # Lab must match batch
+            if ss.batch:
+                lab_qs = lab_qs.filter(batch=ss.batch)
+
+            total_lab = lab_qs.count()
+            attended_lab = lab_qs.filter(status="present").count()
+
+            lab_percentage = (
+                round((attended_lab / total_lab) * 100, 2)
+                if total_lab > 0 else 0
+            )
+
+            subject_data.append({
+                "name": ss.subject.subject_name,
+                "code": ss.subject.subject_code,
+                "batch": ss.batch.batch_name if ss.batch else None,
+                "session_type": "Lab",
+                "total": total_lab,
+                "attended": attended_lab,
+                "percentage": lab_percentage
+            })
+    for s in subject_data:
+        print(s)
+    return render(
+        request,
+        "Student/Student_Dash.html",
+        {
+            "student": student,
+            "Subjects": subject_data
+        }
+    )
 def student_logout(request):
     logout(request)
     return render(request , 'home.html')

@@ -78,7 +78,7 @@
                             <p class="text-sm text-[#687a82] dark:text-gray-400 mt-1">Please enter your credentials to
                                 initiate face recognition.</p>
                         </div>
-                        <form action="{% url 'StudentDash_view' %}" method="post">
+                        <form action="{% url 'StudentLogin_view' %}" method="post">
                             {% csrf_token %}
                         <div class="flex flex-col gap-4">
                             <!-- Roll Number Field -->
