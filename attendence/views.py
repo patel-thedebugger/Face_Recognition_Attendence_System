@@ -83,7 +83,9 @@ def link_faculty_subject(request):
                         return redirect('AdminDashboard_view')
                     else:
                         batch = None
-
+                if(FacultySubject.objects.filter(faculty=faculty, subject=subject, batch=batch, session_type=session_type).exists()):
+                    print(f"FacultySubject already exists for {faculty.name} - {subject.subject_name} - {session_type} - Batch: {batch.batch_name if batch else 'None'}")
+                    continue
                 FacultySubject.objects.create(
                     faculty=faculty,
                     subject=subject,
@@ -143,7 +145,7 @@ def enroll_students_subjects(request):
 
                 # 🔹 LAB ONLY SUBJECT
                 elif subject.is_lab_only:
-                    batch = Batch.objects.filter(semester_id=semester_id).first()
+                    batch = Batch.objects.filter(id=student.batch.id).first()
                     StudentSubject.objects.get_or_create(
                         student=student,
                         subject=subject,
@@ -162,7 +164,7 @@ def enroll_students_subjects(request):
                     )
 
                     # Lab entry
-                    batch = Batch.objects.filter(semester_id=semester_id).first()
+                    batch = Batch.objects.filter(id = student.batch.id).first()
                     StudentSubject.objects.get_or_create(
                         student=student,
                         subject=subject,
@@ -252,7 +254,7 @@ def delete_enrollment(request, enrollment_id):
 #     return JsonResponse(data)
 
 def delete_faculty_subject(request, fs_id):
-    FacultySubject.objects.filter(faculty_id=fs_id).delete()
+    FacultySubject.objects.filter(id=fs_id).delete()
     return JsonResponse({"success": True})
 
 @require_GET
@@ -395,11 +397,12 @@ def get_students_for_subject(request):
     fs = FacultySubject.objects.select_related(
         "subject", "batch",
     ).get(id=fs_id, faculty=faculty, session_type=session_type, subject_id=subject_id)
-
+    print(f"Fetching students for FacultySubject ID: {fs_id}, Subject: {fs.subject.subject_name}, Session Type: {fs.session_type}, Batch: {fs.batch.batch_name if fs.batch else 'None'}, Date: {date}")
     # 🔥 MAIN FILTER
     students_qs = StudentSubject.objects.filter(
         subject=fs.subject,
-        session_type=fs.session_type
+        session_type=fs.session_type,
+        batch=fs.batch 
     )
 
     attendance_qs = Attendance.objects.filter(
