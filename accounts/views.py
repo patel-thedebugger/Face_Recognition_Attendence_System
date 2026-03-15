@@ -113,7 +113,8 @@ def StudentDash_view(request):
 
             faculty = FacultySubject.objects.filter(
                 subject=ss.subject,
-                session_type="lab"
+                session_type="lab",
+                batch=ss.batch
             ).select_related("faculty")
             faculty = faculty.first()  # Get the first matching faculty
             f_id = faculty.faculty.id if faculty else None
@@ -125,11 +126,7 @@ def StudentDash_view(request):
                 subject=ss.subject,
                 session_type="lab"
             )
-
-            # Lab must match batch
-            if ss.batch:
-                lab_qs = lab_qs.filter(batch=ss.batch)
-
+            print("LAB QS:", lab_qs, "FOR SUBJECT:", ss.subject.subject_name, "AND BATCH:", ss.batch.batch_name, "STUDENT:", student.name)
             total_lab = lab_qs.count()
             attended_lab = lab_qs.filter(status="present").count()
 
@@ -149,8 +146,6 @@ def StudentDash_view(request):
                 "attended": attended_lab,
                 "percentage": lab_percentage
             })
-    for s in subject_data:
-        print(s)
     return render(
         request,
         "Student/Student_Dash.html",

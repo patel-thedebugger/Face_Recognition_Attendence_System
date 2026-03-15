@@ -171,7 +171,8 @@
                                         id="attendanceDate"
                                         name="date"
                                         class="bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-primary-navy/20 focus:border-primary-navy"
-                                        value="{{ today|date:'Y-m-d' }}"
+                                        value="{% now 'Y-m-d' %}"
+                                        max="{% now 'Y-m-d' %}"
                                     />
                                 </div>
                             </div>
@@ -336,11 +337,12 @@
     }
 
     upd_date();
-
+    const date = document.getElementById("attendanceDate").value;
+    console.log("Initial date value:", date);
     const sessionSelect = document.getElementById("sessionType");
     const semSelect = document.getElementById("sem_number");
     const subjectSelect = document.getElementById("subjectSelect");
-
+    
     function loadSubjects() {
         const sessionType = sessionSelect.value;
         const semesterId = semSelect.value;
@@ -366,24 +368,28 @@
 
     // defaults
     loadSubjects();
-
     // listeners
     sessionSelect.addEventListener("change", loadSubjects);
     semSelect.addEventListener("change", loadSubjects);
 
 
     // Load students on subject change
-      const studentTableBody = document.getElementById("studentTableBody");
+    const studentTableBody = document.getElementById("studentTableBody");
 
-      subjectSelect.addEventListener("change", function () {
-          const fsId = this.value.split("|")[0];   // FacultySubject.id
-          const sId = this.value.split("|")[1];    // Subject.id (not used currently, but can be useful for future extensions)
-
+    subjectSelect.addEventListener("change", loadStudents);
+    document.getElementById("attendanceDate").addEventListener("change", loadSubjects);
+    function loadStudents()
+    {
+        const fsId = this.value.split("|")[0];   // FacultySubject.id
+        const sId = this.value.split("|")[1];    // Subject.id (not used currently, but can be useful for future extensions)
+        const date = document.getElementById("attendanceDate").value;
+        console.log("date on subject change:", date);
+        console.log("Selected FacultySubject ID:", fsId, "Subject ID:", sId, "Session Type:", sessionSelect.value);
           studentTableBody.innerHTML = "";
 
           if (!fsId) return;
 
-          fetch(`/Faculty/students/?faculty_subject_id=${fsId}&session_type=${sessionSelect.value}&subject_id=${sId}`)
+          fetch(`/Faculty/students/?faculty_subject_id=${fsId}&session_type=${sessionSelect.value}&subject_id=${sId}&date=${date}`)
               .then(res => res.json())
               .then(data => {
                   if (data.students.length === 0) {
@@ -429,7 +435,7 @@
                       studentTableBody.insertAdjacentHTML("beforeend", row);
                   });
               });
-      });
+    }
 
 </script>
 

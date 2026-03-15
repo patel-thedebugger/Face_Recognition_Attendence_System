@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_GET
-from django.utils.timezone import now
+from django.utils.timezone import datetime, now
 
 # Create your views here.
 
@@ -387,7 +387,9 @@ def get_students_for_subject(request):
     fs_id = request.GET.get("faculty_subject_id")
     session_type = request.GET.get("session_type")
     subject_id = request.GET.get("subject_id")
-    date = request.GET.get("date") or now().date()  # Use current date if not provided
+    date_str = request.GET.get("date")  # Use current date if not provided
+    print("date_str:", date_str)
+    date = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else now().date()
 
     if not fs_id:
         return JsonResponse({"students": []})
@@ -400,31 +402,25 @@ def get_students_for_subject(request):
     print(f"Fetching students for FacultySubject ID: {fs_id}, Subject: {fs.subject.subject_name}, Session Type: {fs.session_type}, Batch: {fs.batch.batch_name if fs.batch else 'None'}, Date: {date}")
     # 🔥 MAIN FILTER
     students_qs = StudentSubject.objects.filter(
-        subject=fs.subject,
+        subject= Subject.objects.get(id=subject_id),
         session_type=fs.session_type,
         batch=fs.batch 
     )
-
+    subject=Subject.objects.get(id=subject_id)
     attendance_qs = Attendance.objects.filter(
-        subject=fs.subject,
-        faculty=faculty,
-        session_type=fs.session_type,
+        subject=subject,
+        session_type=session_type,
         date=date,
+        faculty=faculty
     )
     print(date, fs.subject, fs.session_type)
-    print("attendance_qs:", attendance_qs)
-    # Lab → batch required
-    if fs.session_type == "lab":
-        students_qs = students_qs.filter(batch=fs.batch)
-
-    if fs.session_type == "lab":
-        attendance_qs = attendance_qs.filter(batch=fs.batch)
     
     attendance_map = {
-        att.student_id: att.status
+        att.student.id: att.status
         for att in attendance_qs
     }
-
+    print("Attendance Query:", attendance_qs)
+    print("Attendance Records:", list(attendance_qs.values()))
     data = []
     for ss in students_qs.select_related("student"):
         data.append({
