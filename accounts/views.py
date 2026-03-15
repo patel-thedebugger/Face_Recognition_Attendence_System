@@ -111,6 +111,15 @@ def StudentDash_view(request):
         # ---------- LAB ----------
         if ss.session_type in ["lab", "both"]:
 
+            faculty = FacultySubject.objects.filter(
+                subject=ss.subject,
+                session_type="lab"
+            ).select_related("faculty")
+            faculty = faculty.first()  # Get the first matching faculty
+            f_id = faculty.faculty.id if faculty else None
+
+            f_id = str(f_branch) + " " + str(f_id) if f_id else None
+
             lab_qs = Attendance.objects.filter(
                 student=student,
                 subject=ss.subject,
@@ -133,6 +142,8 @@ def StudentDash_view(request):
                 "name": ss.subject.subject_name,
                 "code": ss.subject.subject_code,
                 "batch": ss.batch.batch_name if ss.batch else None,
+                "faculty": faculty.faculty.name if faculty else None,
+                "f_id": f_id,
                 "session_type": "Lab",
                 "total": total_lab,
                 "attended": attended_lab,
