@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from accounts.views import *
 from attendence.views import *
-
+from recognition.views import *
 urlpatterns = [
     path('', home_view, name='home'),
     path('Faculty/Login/', FacultyLogin_view, name='FacultyLogin_view'),
@@ -57,5 +57,7 @@ urlpatterns = [
     path('ajax/delete-faculty/<int:faculty_id>/', delete_faculty, name='delete_faculty'),
     path('auto-import-students/', bulk_register_students_auto, name='bulk_register_students_auto'),
 
+    path('ajax/process-attendance/', process_attendance, name='process_attendance'),
+    
     path('admin/', admin.site.urls),
 ]
