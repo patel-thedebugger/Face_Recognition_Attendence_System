@@ -222,18 +222,17 @@
                             <div class="p-8">
                                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                                     <div class="lg:col-span-7 space-y-4">
-                                        <form>
                                             <div
                                                 class="bg-slate-50 border border-dashed border-slate-300 rounded-2xl p-8 flex flex-col items-center justify-center text-center group hover:bg-slate-100 transition-colors cursor-pointer">
-                                                <div
+                                                <!-- <div
                                                     class="size-16 bg-white border border-slate-200 rounded-full flex items-center justify-center text-primary-navy shadow-sm mb-4 group-hover:scale-110 transition-transform">
                                                     <span class="material-symbols-outlined !text-3xl">add_a_photo</span>
                                                 </div>
                                                 <p class="text-sm font-bold text-slate-700">Upload Reference Photo</p>
                                                 <p class="text-xs text-slate-400 mt-1 max-w-[280px]">High-quality JPG or PNG. Ensure
                                                     neutral
-                                                    expression and clear lighting for face recognition accuracy.</p>
-                                                <input class="hidden" id="referencePhoto" type="file" />
+                                                    expression and clear lighting for face recognition accuracy.</p> -->
+                                                <input class="" id="referencePhoto" type="file" />
                                                 <button
                                                     class="mt-4 px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 shadow-sm hover:shadow-md transition-all"
                                                     onclick="document.getElementById('referencePhoto').click()" type="button">
@@ -245,7 +244,6 @@
                                                 <span class="material-symbols-outlined !text-xl">cloud_done</span> Start Biometric Attendance
                                             </button>
 
-                                        </form>
                                     </div>
                                     <div class="lg:col-span-5 flex flex-col h-[480px]">
                                         <div class="flex items-center justify-between mb-4">
@@ -417,7 +415,7 @@
                                         <p class="text-[10px] text-slate-400 mt-1">ID: ${stu.roll}</p>
                                     </div>
                                 </div>
-                                <input type="hidden" name="all_students" value="${stu.id}">
+                                <input type="hidden" name="all_students" value="${stu.roll}">
 
                                 <div class="flex items-center gap-4">
                                     <span
@@ -426,6 +424,7 @@
                                     <input
                                         name="present_students"
                                         value="${stu.id}"
+                                        data-roll="${stu.roll}"
                                         ${isPresent ? 'checked' : ''}
                                         class="size-5 rounded border-slate-300 text-primary-navy focus:ring-primary-navy"
                                         type="checkbox" />
@@ -438,12 +437,30 @@
     }
 
 
-const btn = document.getElementById("startAttendance")
 
-btn.addEventListener("click", function(){
+function getCookie(name) {
+    let cookieValue = null;
+
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+
+    return cookieValue;
+}
+const btn = document.getElementById("startAttendance")
+btn.addEventListener("click", function(e){
     e.preventDefault();
     const file = document.getElementById("referencePhoto").files[0]
-
+    console.log(file.files);
     if(!file){
         alert("Please upload class photo first")
         return
@@ -451,7 +468,7 @@ btn.addEventListener("click", function(){
 
     const formData = new FormData()
     formData.append("image", file)
-
+    console.log("button clicked");
     fetch("/ajax/process-attendance/",{
         method:"POST",
         body:formData,
@@ -465,7 +482,7 @@ btn.addEventListener("click", function(){
         data.recognized_students.forEach(id=>{
 
             const checkbox = document.querySelector(
-                `input[name="present_students"][value="${id}"]`
+               `input[data-roll="${id}"]`
             )
 
             if(checkbox){

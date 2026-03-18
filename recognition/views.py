@@ -22,7 +22,7 @@ face_app = FaceAnalysis(name="buffalo_l")
 face_app.prepare(ctx_id=-1)   # use -1 if CPU
 
 
-# @login_required
+@login_required
 @require_POST
 @csrf_exempt
 def process_attendance(request):
@@ -42,10 +42,10 @@ def process_attendance(request):
     # Detect faces using RetinaFace
     faces = face_app.get(image)
     print(f"Detected {len(faces)} faces in the uploaded image.")
-    print("Database sample:")
-    for k, v in database.items():
-        print(k, type(v), len(v))
-        print("First embedding shape:", np.array(v[0]).shape)
+    # print("Database sample:")
+    # for k, v in database.items():
+    #     print(k, type(v), len(v))
+    #     print("First embedding shape:", np.array(v[0]).shape)
     
     recognized_students = []
 
