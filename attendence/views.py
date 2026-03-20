@@ -450,8 +450,12 @@ def mark_attendance(request):
         session_type = request.POST.get("sessionType")
         date = request.POST.get("date") or now().date()  # Use current date if not provided
         total_students = request.POST.getlist("all_students")
+        
+        
         total_students.remove('')  # Remove empty strings if any
-        students = Student.objects.filter(id__in=[int(x) for x in total_students]).select_related("user")
+        students = Student.objects.filter(roll_no__in=[int(x) for x in total_students]).select_related("user")
+
+        print("students : ",students)
         batch_id = request.POST.get("batch_id") if session_type == "lab" else None
         
         subject = Subject.objects.get(id=int(subject_id))
@@ -462,14 +466,14 @@ def mark_attendance(request):
     
         print(students)
         for s in students:
-            print(f"Processing student {s.roll_no} - Present IDs: {present_ids}")
+            print(f"Processing student {s.id} - Present IDs: {present_ids}")
             status = "present" if str(s.id) in present_ids else "absent"
             try:
                  Attendance.objects.update_or_create(
                     student=s,
                     faculty=faculty,
                     subject=subject,
-                    batch=batch,
+                    batch=s.batch,
                     date=date,
                     defaults={
                         "session_type": session_type,
