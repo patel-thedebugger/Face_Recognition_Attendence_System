@@ -248,6 +248,10 @@
                                     <div class="lg:col-span-5 flex flex-col h-[480px]">
                                         <div class="flex items-center justify-between mb-4">
                                             <h3 class="font-bold text-slate-800">Student List</h3>
+                                            <button type="button" id="deselectAllBtn"
+                                                class="text-xs px-3 py-1 bg-red-100 text-red-700 rounded-lg font-semibold hover:bg-red-200">
+                                                Deselect All
+                                            </button>
                                             <!-- <div class="flex items-center gap-2">
                                                 <span class="text-[11px] font-bold text-slate-400 uppercase">Toggle
                                                     All</span>
@@ -310,10 +314,30 @@
             </main>
         </div>
     </div>
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay"
+            class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] hidden">
+
+            <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center gap-4">
+                
+                <!-- Spinner -->
+                <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+
+                <!-- Text -->
+                <p class="text-sm font-semibold text-slate-700">
+                    Processing Biometric Attendance...
+                </p>
+            </div>
+        </div>
 </body>
 
 <script>
 
+    const deselectAllBtn = document.getElementById("deselectAllBtn");
+    deselectAllBtn.addEventListener("click", () => {
+        const checkboxes = document.querySelectorAll('input[name="present_students"]');
+        checkboxes.forEach(cb => cb.checked = false);
+    });
 
     function upd_date() {
 
@@ -456,9 +480,12 @@ function getCookie(name) {
 
     return cookieValue;
 }
+
 const btn = document.getElementById("startAttendance")
 btn.addEventListener("click", function(e){
     e.preventDefault();
+    const loading = document.getElementById('loadingOverlay');
+    loading.classList.remove('hidden');
     const file = document.getElementById("referencePhoto").files[0]
     console.log(file.files);
     if(!file){
@@ -479,6 +506,8 @@ btn.addEventListener("click", function(e){
     .then(res=>res.json())
     .then(data=>{
 
+        if(data.recognized_students)
+            loading.classList.add('hidden');
         data.recognized_students.forEach(id=>{
 
             const checkbox = document.querySelector(

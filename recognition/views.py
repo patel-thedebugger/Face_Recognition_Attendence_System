@@ -12,19 +12,19 @@ from insightface.app import FaceAnalysis
 # Path to embeddings database
 EMBEDDING_FILE = os.path.join("recognition", "embeddings.npy")
 
-data = np.load("recognition/embeddings.npy", allow_pickle=True).item()
+# data = np.load("recognition/embeddings.npy", allow_pickle=True).item()
 
-for k, v in data.items():
-    print(k, v.shape, v.dtype)
-    break
+# for k, v in data.items():
+#     print(k, v.shape, v.dtype)
+#     break
 # Initialize RetinaFace + ArcFace
 face_app = FaceAnalysis(name="buffalo_l")
-face_app.prepare(ctx_id=-1)   # use -1 if CPU
+face_app.prepare(ctx_id=0)   # Use GPU (ctx_id=0) if available, otherwise set to -1 for CPU
 
 
 @login_required
 @require_POST
-@csrf_exempt
+# @csrf_exempt
 def process_attendance(request):
 
     image_file = request.FILES.get("image")
@@ -59,16 +59,16 @@ def process_attendance(request):
 
         for student_id, db_embedding in database.items():
 
-            # ✅ Ensure correct format
+            # Ensure correct format
             db_embedding = np.array(db_embedding, dtype=np.float32).flatten()
 
-            # 🚫 Skip invalid
+            # Skip invalid
             if db_embedding.shape[0] != 512:
                 continue
 
             db_embedding = db_embedding / np.linalg.norm(db_embedding)
 
-            # ✅ Cosine similarity (no double normalization)
+            # Cosine similarity (no double normalization)
             score = np.dot(embedding, db_embedding)
 
             # DEBUG
@@ -78,7 +78,7 @@ def process_attendance(request):
                 best_score = score
                 best_match = student_id
 
-        print(f"🎯 BEST MATCH → {best_match}, SCORE → {best_score:.3f}")
+        print(f"Match -> {best_match}, Score -> {best_score:.3f}")
 
         if best_match is not None and best_score >= 0.5:
             recognized_students.append(best_match)
